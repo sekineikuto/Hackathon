@@ -84,11 +84,11 @@ public:
 		int nValue;			// 値
 	} SETING2DUI;
 
-	C2DUi() : CScene(PRIORITY_2DUI) {}																							// コンストラクタ
+	C2DUi(PRIORITY pri) : CScene(pri) {}																							// コンストラクタ
 	~C2DUi() {}																													// デストラクタ
 
-	static C2DUi * Create(SETING2DUI &seting);																					// 生成
-	void Init(SETING2DUI &seting);																								// 初期化
+	static C2DUi * Create(SETING2DUI &seting, PRIORITY pri = PRIORITY_2DUI);																					// 生成
+	void Init(SETING2DUI &seting, PRIORITY pri);																								// 初期化
 	void Init(void);																											// 初期化
 	void Uninit(void);																											// 終了
 	void Update(void);																											// 更新

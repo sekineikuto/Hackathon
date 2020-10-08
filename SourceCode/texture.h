@@ -23,7 +23,9 @@ public:
 		NAME_NONE = -1,					// ñ≥Çµ
 		NAME_FRAME,
 		NAME_NUMBER,
-		NAME_PleasePressButton000,
+		NAME_PLEASEPRESSBUTTON000,
+		NAME_GAMEBG,
+		NAME_PLAYER,
 		NAME_MAX						// ç≈ëÂêî
 	};
 	enum

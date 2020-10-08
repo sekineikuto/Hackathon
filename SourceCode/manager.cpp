@@ -21,6 +21,11 @@
 #include "renderer.h"
 #include "mode.h"
 #include "title.h"
+#include "tutorial.h"
+#include "game.h"
+#include "result.h"
+#include "ranking.h"
+
 
 //-------------------------------------------------------------------------------------------------------------
 // 静的メンバ変数の初期化
@@ -187,26 +192,28 @@ void CManager::SetMode(MODE mode)
 	// ライトの方向を設定
 	m_Light.SetDirection();
 
-	if (m_pModeClass != nullptr)
-	{
-		m_pModeClass->Uninit();
-		delete m_pModeClass;
-		m_pModeClass = nullptr;
-	}
+	// シーンの開放処理とサウンドの停止
+	SceneAllReleaseAndSoundStop();
+
 	m_mode = mode;
 	switch (m_mode)
 	{
 	case MODE_TITLE:
 		m_pModeClass = CTitle::Create();
 		break;
-	case MODE_SELECT:
-		break;
 	case MODE_TUTORIAL:
+		m_pModeClass = CTutorial::Create();
 		break;
 	case MODE_GAME:
+		m_pModeClass = CGame::Create();
 		break;
 	case MODE_RESULT:
+		m_pModeClass = CResult::Create();
 		break;
+	case MODE_RANKING:
+		m_pModeClass = CRanking::Create();
+		break;
+
 	}
 }
 

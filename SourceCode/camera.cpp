@@ -53,27 +53,27 @@ void CCamera::Init(void)
 	m_vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 	m_move = D3DXVECTOR3(1.0f, 1.0f, 1.0f);
 	// 選択モードの時
-	if (CManager::GetMode() == CManager::MODE_SELECT)
-	{
-		m_rot = CAMERA_ROT_SETSELECT;
-		m_HeadPos = CAMERA_HEADPOS_SETSELECT;
-		m_fMagnificat = CAMERA_MAGNIFICAT_SETSELECT;
-	}
+	//if (CManager::GetMode() == CManager::MODE_SELECT)
+	//{
+	//	m_rot = CAMERA_ROT_SETSELECT;
+	//	m_HeadPos = CAMERA_HEADPOS_SETSELECT;
+	//	m_fMagnificat = CAMERA_MAGNIFICAT_SETSELECT;
+	//}
 	// タイトルモードの時
-	else if (CManager::GetMode() == CManager::MODE_TITLE)
-	{
-		m_rot = CAMERA_ROT_UNSET;
-		m_HeadPos = CAMARA_INITPOS_TITLE;
-		m_fMagnificat = CAMERA_MAGNIFICAT_SETTITLE;
-	}
-	// リザルトモードの時
-	else if (CManager::GetMode() == CManager::MODE_RESULT)
-	{
-		m_rot = CAMERA_ROT_UNSET;
-		m_HeadPos = CAMARA_INITPOS_TITLE;
-		m_fMagnificat = CAMERA_MAGNIFICAT_SETRESULT;
-	}
-	else
+	//else if (CManager::GetMode() == CManager::MODE_TITLE)
+	//{
+	//	m_rot = CAMERA_ROT_UNSET;
+	//	m_HeadPos = CAMARA_INITPOS_TITLE;
+	//	m_fMagnificat = CAMERA_MAGNIFICAT_SETTITLE;
+	//}
+	//// リザルトモードの時
+	//else if (CManager::GetMode() == CManager::MODE_RESULT)
+	//{
+	//	m_rot = CAMERA_ROT_UNSET;
+	//	m_HeadPos = CAMARA_INITPOS_TITLE;
+	//	m_fMagnificat = CAMERA_MAGNIFICAT_SETRESULT;
+	//}
+	//else
 	{// その他の時
 		m_rot = CAMERA_ROT_UNSET;
 		m_HeadPos = CAMERA_HEADPOS_UNSET;

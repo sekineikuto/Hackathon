@@ -2,10 +2,14 @@
 # テクスチャファイル情報
 #---------------------------------------------
 [TEXTURE][NUMBER]
-NUMBER = 3
+NUMBER = 5
 
 [TEXTURE][FILENAME]
 FILENAME = DATA\TEXTURE\UI\Frame000.png
 FILENAME = DATA\TEXTURE\UI\number000.png
 FILENAME = DATA\TEXTURE\UI\PleasePressButton000.png
+
+FILENAME = DATA\TEXTURE\BG\GameBG.jpg
+
+FILENAME = DATA\TEXTURE\PLAYER\player.png
 

@@ -16,17 +16,17 @@
 //-------------------------------------------------------------------------------------------------------------
 // 生成
 //-------------------------------------------------------------------------------------------------------------
-C2DUi * C2DUi::Create(SETING2DUI &seting)
+C2DUi * C2DUi::Create(SETING2DUI &seting, PRIORITY pri)
 {
-	C2DUi * pC2dui = new C2DUi;
-	pC2dui->Init(seting);
+	C2DUi * pC2dui = new C2DUi(pri);
+	pC2dui->Init(seting, pri);
 	return pC2dui;
 }
 
 //-------------------------------------------------------------------------------------------------------------
 // 初期化
 //-------------------------------------------------------------------------------------------------------------
-void C2DUi::Init(SETING2DUI & seting)
+void C2DUi::Init(SETING2DUI & seting, PRIORITY pri)
 {
 	m_Mask = seting.mask;
 
@@ -37,7 +37,7 @@ void C2DUi::Init(SETING2DUI & seting)
 	}
 	else
 	{
-		m_pImage = CScene2D::Create(PRIORITY::PRIORITY_2DUI, seting.pos, seting.col, ORIGINVERTEXTYPE_ROTCENTER, seting.size, 0.0f, seting.fRotation);
+		m_pImage = CScene2D::Create(pri, seting.pos, seting.col, ORIGINVERTEXTYPE_ROTCENTER, seting.size, 0.0f, seting.fRotation);
 		m_pImage->BindTexture(CTexture::GetTextureInfo(seting.nTextureID));
 	}
 
@@ -171,12 +171,14 @@ void C2DUi::FADE::Update(CNumericString * pNumber)
 		// 色の変化
 		pCol->a += fChangeValue * nAddSign;
 
-		// アルファ値を範囲内に制限する
-		if (C2DUi::AlphaLimitRange(*pCol) == true)
-		{// 直されたとき
-			nAddSign *= -1;
+		if (nCntNumber == pNumber->m_nNumNumber - 1)
+		{
+			// アルファ値を範囲内に制限する
+			if (C2DUi::AlphaLimitRange(*pCol) == true)
+			{// 直されたとき
+				nAddSign *= -1;
+			}
 		}
-
 		// 頂点カラーを更新する
 		pNumClass->SetVeatexColor();
 	}

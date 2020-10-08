@@ -56,6 +56,9 @@ public:
 		PRIORITY_3DCOLLIDER,	// 3Dコライダー
 		PRIORITY_3DEFFECT,		// 3Dエフェクト
 		PRIORITY_BG,			// 2D背景
+		PRIORITY_ENEMY,			// エネミー
+		PRIORITY_PLAYER,		// プレイヤー
+		PRIORITY_BULLET,		// 弾
 		PRIORITY_2DUI,			// 2DUI
 		PRIORITY_2DEFFECT,		// 2Dエフェクト
 		PRIORITY_MAX,			// 最大数

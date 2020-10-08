@@ -108,13 +108,13 @@ void CLight::SetDirection(void)
 	// 方向ベクトル
 	D3DXVECTOR3 vecDir[LIGHT_MAX] = {};
 	// セレクトモードの時
-	if (CManager::GetMode() == CManager::MODE_SELECT)
-	{
-		vecDir[0] = LIGHT_0_SELECT_DIRECTION;
-		vecDir[1] = LIGHT_1_SELECT_DIRECTION;
-		vecDir[2] = LIGHT_2_SELECT_DIRECTION;
-	}
-	else
+	//if (CManager::GetMode() == CManager::MODE_SELECT)
+	//{
+	//	vecDir[0] = LIGHT_0_SELECT_DIRECTION;
+	//	vecDir[1] = LIGHT_1_SELECT_DIRECTION;
+	//	vecDir[2] = LIGHT_2_SELECT_DIRECTION;
+	//}
+	//else
 	{// その他
 		vecDir[0] = LIGHT_0_UNSET_DIRECTION;
 		vecDir[1] = LIGHT_1_UNSET_DIRECTION;

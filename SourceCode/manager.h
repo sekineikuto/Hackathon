@@ -55,10 +55,10 @@ public:
 	{
 		MODE_NONE = 0,		// 無し
 		MODE_TITLE,			// タイトル
-		MODE_SELECT,		// 選択
 		MODE_TUTORIAL,		// チュートリアル
 		MODE_GAME,			// ゲーム
 		MODE_RESULT,		// リザルト
+		MODE_RANKING,		// ランキング
 		MODE_MAX			// 最大
 	} MODE;
 

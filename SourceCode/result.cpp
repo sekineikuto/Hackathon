@@ -7,18 +7,19 @@
 //-------------------------------------------------------------------------------------------------------------
 // インクルードファイル
 //-------------------------------------------------------------------------------------------------------------
-#include "title.h"
+#include "result.h"
 #include "2DUI.h"
-#include "keyboard.h"
+
 #include "renderer.h"
+#include "keyboard.h"
 #include "fade.h"
 
 //-------------------------------------------------------------------------------------------------------------
 // 生成
 //-------------------------------------------------------------------------------------------------------------
-CTitle * CTitle::Create(void)
+CResult * CResult::Create(void)
 {
-	CTitle *pTitle = new CTitle;
+	CResult *pTitle = new CResult;
 	pTitle->Init();
 	return pTitle;
 }
@@ -26,17 +27,17 @@ CTitle * CTitle::Create(void)
 //-------------------------------------------------------------------------------------------------------------
 // 初期化
 //-------------------------------------------------------------------------------------------------------------
-void CTitle::Init(void)
+void CResult::Init(void)
 {
 	C2DUi::SETING2DUI set;
 	set.bDisp = true;
 	set.col = MYLIB_D3DXCOR_SET;
 	set.fRotation = 0.0f;
-	set.mask.unMask = C2DUi::MASK_FADE | C2DUi::MASK_FLASHING;
-	set.nTextureID = 2;
+	set.mask.unMask = C2DUi::MASK_FADE | C2DUi::MASK_NUMBER;
+	set.nTextureID = 1;
 	set.nValue = 123456789;
-	set.pos = D3DXVECTOR3(640.0f, 600.0f, 0.0f);
-	set.size = D3DXVECTOR2(240.0f, 60.0f);
+	set.pos = D3DXVECTOR3(640.0f, 360.0f, 0.0f);
+	set.size = D3DXVECTOR2(60.0f, 120.0f);
 	pC2dui = C2DUi::Create(set);
 
 	pC2dui->GetFade()->bLoop = true;
@@ -44,47 +45,33 @@ void CTitle::Init(void)
 	pC2dui->GetFade()->fChangeValue = 1.0f / pC2dui->GetFade()->nTiming;
 	pC2dui->GetFade()->nAddSign = 1;
 
-	pC2dui->GetFlashing()->m_nTiming = 3;
-
-	this->m_State = STATE_NORMAL;
-
-	CMode::Init(STATE_NORMAL, 30);
+	//pC2dui->GetFlashing()->m_nTiming = 20;
 }
 
 //-------------------------------------------------------------------------------------------------------------
 // 終了
 //-------------------------------------------------------------------------------------------------------------
-void CTitle::Uninit(void)
+void CResult::Uninit(void)
 {
 }
 
 //-------------------------------------------------------------------------------------------------------------
 // 更新
 //-------------------------------------------------------------------------------------------------------------
-void CTitle::Update(void)
+void CResult::Update(void)
 {
-	if (this->m_State == STATE_NORMAL)
-	{
-		pC2dui->GetFade()->Update(pC2dui->GetImage());
-	}
-	else if (this->m_State == STATE_OUT)
-	{
-		pC2dui->GetFlashing()->Update(pC2dui);
-		if (this->m_nCntState == this->m_nMaxCntState)
-		{
-			CManager::GetRenderer().GetFade()->SetFade(CManager::MODE_TUTORIAL);
-		}
-		this->m_nCntState++;
-	}
+	pC2dui->GetFade()->Update(pC2dui->GetNumericString());
+	//pC2dui->GetFlashing()->Update(pC2dui);
+
 	if (CManager::GetKeyboard().GetTrigger(DIK_RETURN))
 	{
-		this->SetState(STATE_OUT);
+		CManager::GetRenderer().GetFade()->SetFade(CManager::MODE_RANKING);
 	}
 }
 
 //-------------------------------------------------------------------------------------------------------------
 // 描画
 //-------------------------------------------------------------------------------------------------------------
-void CTitle::Draw(void)
+void CResult::Draw(void)
 {
 }
