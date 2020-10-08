@@ -51,7 +51,7 @@ public:
 	typedef struct FLASHING
 	{
 		UINT m_nTiming;															// “_–Å
-		bool IsEqual(UINT &nTiming) { return (nTiming == m_nTiming); }
+		bool IsEqual(UINT &nTiming) { return (nTiming >= m_nTiming); }
 		void Update(C2DUi *pThis);
 
 	} FLASHING;

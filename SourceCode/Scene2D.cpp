@@ -25,6 +25,7 @@ CScene2D::CScene2D(CScene::PRIORITY priority) : CScene(priority)
 	m_TexAnimInfo = { 0,0,0 };
 	m_fRadius = { 0.0f };
 	m_fRotation = { 0.0f };
+	m_bDisp = true;
 }
 
 //-------------------------------------------------------------------------------------------------------------
@@ -72,6 +73,8 @@ void CScene2D::Init(void)
 {
 	// 変数宣言
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer().GetDevice();
+	
+	m_bDisp = true;
 
 	// 頂点の作成
 	this->MakeVatex(pDevice);
@@ -118,9 +121,11 @@ void CScene2D::Draw(void)
 
 	// テクスチャの設定
 	pDevice->SetFVF(FVF_VERTEX_2D);
-
-	// ポリゴン描画
-	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
+	if (m_bDisp)
+	{
+		// ポリゴン描画
+		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
+	}
 }
 
 //-------------------------------------------------------------------------------------------------------------

@@ -87,7 +87,8 @@ public:
 	int                     CalculatVatexUVMap(bool bLoop, int nFrameMax, int &nFrame, int nNumWidht, int nNumHight, int &nCountWidht, int &nCountHight);
 	void                    CalSelectionUVMap(bool bIteration, int nFrameMax, int &nFrame, int nNumWidht, int &nCountWidht, int nCountHight, int &m_nIteration);
 	void                    CalTurnBackUVMap(int nFrameMax, int &nFrame, int nNumWidht, int &nCountWidht, int nCountHight, int &m_nIteration);
-
+	inline void             SetDisp(const bool bDisp) { m_bDisp = bDisp; }
+	inline bool &           GetDisp(void) { return m_bDisp; }
 protected:
 	/* -- メンバ関数 -- */
 	HRESULT                 MakeVatex(LPDIRECT3DDEVICE9 pDevice);					// 頂点の作成
@@ -105,6 +106,7 @@ protected:
 	TEXTUREANIMEINFO        m_TexAnimInfo;											// テクスチャアニメーション情報
 	float                   m_fRadius;												// 半径
 	float                   m_fRotation;											// 回転量
+	bool                    m_bDisp;												// 描画フラグ
 };
 
 #endif

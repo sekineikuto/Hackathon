@@ -72,7 +72,7 @@ HRESULT CNumber::Init(float fSizeX, float fSizeY, int nNumber, float fRot, D3DXV
 	m_size.y	= fSizeY;		// 大きさY
 	m_fRot		= fRot;			// 回転量
 	m_pos		= pos;			// 位置 
-
+	m_col		= col;
 	// 辺巣宣言
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer().GetDevice();	// デバイスのポインタ
 

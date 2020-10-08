@@ -201,6 +201,9 @@ HRESULT CSound::InitSound(HWND hWnd)
 //-------------------------------------------------------------------------------------------------------------
 void CSound::UninitSound(void)
 {
+	// ファイルの開放
+	UnLoadFileName();
+
 	// 一時停止
 	for (int nCntSound = 0; nCntSound < SOUND_LABEL_MAX; nCntSound++)
 	{

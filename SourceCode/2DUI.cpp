@@ -105,10 +105,6 @@ void C2DUi::Draw(void)
 		{
 			m_pNumber->Draw();
 		}
-		if (m_pImage != nullptr)
-		{
-			m_pImage->Draw();
-		}
 	}
 }
 
@@ -198,6 +194,10 @@ void C2DUi::FLASHING::Update(C2DUi * pThis)
 	if (pThis->m_pFlashing->IsEqual(*pTime))
 	{
 		pThis->ChangeDispFlag();
-		pTime = 0;
+		if (pThis->m_pImage != nullptr)
+		{
+			pThis->m_pImage->SetDisp(pThis->m_bDisp);
+		}
+		*pTime = 0;
 	}
 }

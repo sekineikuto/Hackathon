@@ -29,19 +29,19 @@ void CTitle::Init(void)
 	set.bDisp = true;
 	set.col = MYLIB_D3DXCOR_SET;
 	set.fRotation = 0.0f;
-	set.mask.unMask = C2DUi::MASK_FLASHING;
-	set.nTextureID = 0;
-	set.nValue = 0;
+	set.mask.unMask = C2DUi::MASK_FADE | C2DUi::MASK_NUMBER;
+	set.nTextureID = 1;
+	set.nValue = 123456789;
 	set.pos = D3DXVECTOR3(640.0f, 360.0f, 0.0f);
-	set.size = D3DXVECTOR2(150.0f, 50.0f);
+	set.size = D3DXVECTOR2(60.0f, 120.0f);
 	pC2dui = C2DUi::Create(set);
 
-	//pC2dui->GetFade()->bLoop = true;
-	//pC2dui->GetFade()->nTiming = 30;
-	//pC2dui->GetFade()->fChangeValue = 1.0f / pC2dui->GetFade()->nTiming;
-	//pC2dui->GetFade()->nAddSign = 1;
+	pC2dui->GetFade()->bLoop = true;
+	pC2dui->GetFade()->nTiming = 30;
+	pC2dui->GetFade()->fChangeValue = 1.0f / pC2dui->GetFade()->nTiming;
+	pC2dui->GetFade()->nAddSign = 1;
 
-	pC2dui->GetFlashing()->m_nTiming = 20;
+	//pC2dui->GetFlashing()->m_nTiming = 20;
 }
 
 //-------------------------------------------------------------------------------------------------------------
@@ -56,8 +56,8 @@ void CTitle::Uninit(void)
 //-------------------------------------------------------------------------------------------------------------
 void CTitle::Update(void)
 {
-	//pC2dui->GetFade()->Update(pC2dui->GetImage());
-	pC2dui->GetFlashing()->Update(pC2dui);
+	pC2dui->GetFade()->Update(pC2dui->GetNumericString());
+	//pC2dui->GetFlashing()->Update(pC2dui);
 }
 
 //-------------------------------------------------------------------------------------------------------------
