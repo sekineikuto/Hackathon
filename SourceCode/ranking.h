@@ -35,9 +35,6 @@ public:
 
 	static void SetPlayerScore(const float fScore) { m_fPlayerScore = fScore; }	// プレイヤーのスコア設定
 
-	static HRESULT LoadRanking(void);	// ランキングのロード
-	static void SaveRanking(void);		// ランキングのセーブ
-
 private:
 	C2DUi *pC2dui;					// ２DUIポインタ
 
