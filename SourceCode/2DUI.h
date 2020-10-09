@@ -43,10 +43,11 @@ public:
 		unsigned int bFade : 1;
 	} _MASK;
 
-	typedef union
+	typedef union MASK
 	{
-		_MASK field;
+		MASK(int n = 0) : unMask(n) {}
 		unsigned int unMask;
+		_MASK field;
 	} MASK;
 	typedef struct FLASHING
 	{
@@ -74,14 +75,26 @@ public:
 
 	typedef struct SETING2DUI
 	{
-		MASK mask;			// マスク
-		int  nTextureID;	// テクスチャID
-		bool bDisp;			// 描画フラグ
-		D3DXVECTOR3 pos;	// 位置
-		D3DXCOLOR col;		// 色
-		D3DXVECTOR2 size;	// サイズ
-		float fRotation;	// 回転量
-		int nValue;			// 値
+		SETING2DUI() {}
+		SETING2DUI(MASK mask, int  nTextureID, bool bDisp, D3DXVECTOR3 pos, D3DXCOLOR col, D3DXVECTOR2 size, float fRotation, int nValue)
+		{
+			this->mask = mask;
+			this->nTextureID = nTextureID;
+			this->bDisp = bDisp;
+			this->pos = pos;
+			this->col = col;
+			this->size = size;
+			this->fRotation = fRotation;
+			this->nValue =nValue;
+		}
+		MASK        mask;			// マスク
+		int         nTextureID;		// テクスチャID
+		bool        bDisp;			// 描画フラグ
+		D3DXVECTOR3 pos;			// 位置
+		D3DXCOLOR   col;			// 色
+		D3DXVECTOR2 size;			// サイズ
+		float       fRotation;		// 回転量
+		int         nValue;			// 値
 	} SETING2DUI;
 
 	C2DUi(PRIORITY pri) : CScene(pri) {}																							// コンストラクタ

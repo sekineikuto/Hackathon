@@ -806,8 +806,8 @@ void CScene2D::SetVatexPosition(CRenderer::VERTEX_2D * pVtx)
 	case ORIGINVERTEXTYPE_CENTERRIGHT:
 		pVtx[0].pos = D3DXVECTOR3(m_pos.x - m_size.x, m_pos.y - m_size.y*0.5f, 0.0f);
 		pVtx[1].pos = D3DXVECTOR3(m_pos.x, m_pos.y - m_size.y*0.5f, 0.0f);
-		pVtx[2].pos = D3DXVECTOR3(m_pos.x - m_size.x, m_pos.y - m_size.y*0.5f, 0.0f);
-		pVtx[3].pos = D3DXVECTOR3(m_pos.x, m_pos.y - m_size.y*0.5f, 0.0f);
+		pVtx[2].pos = D3DXVECTOR3(m_pos.x - m_size.x, m_pos.y + m_size.y*0.5f, 0.0f);
+		pVtx[3].pos = D3DXVECTOR3(m_pos.x, m_pos.y + m_size.y*0.5f, 0.0f);
 		break;
 	case ORIGINVERTEXTYPE_UPPERLEFT:
 		pVtx[0].pos = D3DXVECTOR3(m_pos.x, m_pos.y, 0.0f);
