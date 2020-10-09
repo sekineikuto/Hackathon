@@ -267,9 +267,6 @@ void CGame::UpdateNormal(void)
 				CScore::SetPlayerScore(PLAYER_1, fDistance1);
 				CScore::SetPlayerScore(PLAYER_2, fDistance2);
 
-				CResult::SetWinPlayer(m_GameWinState);
-
-
 				m_PlaerDist.fPlayer1Dist = fDistance1;
 				m_PlaerDist.fPlayer2Dist = fDistance2;
 
