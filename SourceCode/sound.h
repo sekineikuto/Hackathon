@@ -19,16 +19,14 @@ public:
 	{
 		SOUND_LABEL_NONE = -1,			// 無し
 		/* ----- BGM ----- */
-		SOUND_LABEL_BGM_TITLE = 0,		// タイトル
-		SOUND_LABEL_BGM_TUTORIAL,		// チュートリアル
-		SOUND_LABEL_BGM_GAME,			// ゲーム
-		SOUND_LABEL_BGM_RESULT,			// リザルト
+		SOUND_LABEL_BGM_TITLEANDRESULT = 0,		// タイトルとリザルト
+		SOUND_LABEL_BGM_TUTOANDGAME,			// チュートリアルとゲーム
+		SOUND_LABEL_BGM_CUTINDYUERU,			// カットインデュエル
 		/* ----- SE ----- */
-		SOUND_LABEL_SE_ENTER,			// エンター
-		SOUND_LABEL_SE_THROW,			// 捨てる
-		SOUND_LABEL_SE_CUTIN,			// カットイン
-		SOUND_LABEL_SE_EXPLOSION1,		// 爆発1
-		SOUND_LABEL_SE_EXPLOSION2 ,		// 爆発2
+		SOUND_LABEL_SE_ENTER,				// エンター
+		SOUND_LABEL_SE_THROW,				// 捨てる
+		SOUND_LABEL_SE_CUTIN,				// カットイン
+		SOUND_LABEL_SE_EXPLOSION1,			// 爆発1
 		/* ----- 最大数 ----- */
 		SOUND_LABEL_MAX,
 	} SOUND_LABEL;// サウンドラベル

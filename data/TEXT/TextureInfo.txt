@@ -2,7 +2,7 @@
 # テクスチャファイル情報
 #---------------------------------------------
 [TEXTURE][NUMBER]
-NUMBER = 56
+NUMBER = 57
 
 [TEXTURE][FILENAME]
 FILENAME = DATA\TEXTURE\EFFECT\Effect000.jpg
@@ -64,3 +64,4 @@ FILENAME = DATA\TEXTURE\UI\3rd.png
 FILENAME = DATA\TEXTURE\UI\4th.png
 FILENAME = DATA\TEXTURE\UI\5th.png
 FILENAME = DATA\TEXTURE\UI\ranking.png
+FILENAME = DATA\TEXTURE\UI\GAMEBG000.png
