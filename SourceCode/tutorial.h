@@ -1,7 +1,7 @@
 //*************************************************************************************************************
 //
 // チュートリアル処理 [tutorial.h]
-// Author:IKUTO SEKINE
+// Author:KOKI NISHIYAMA
 //
 //*************************************************************************************************************
 #ifndef _TUTORIAL_H_
@@ -19,6 +19,15 @@ class C2DUi;
 class CTutorial : public CMode
 {
 public:
+	/* 列挙型 */
+	// チュートリアルUI
+	typedef enum
+	{
+		TUTORIALUI_DISCRIPTION = 0,		// 説明
+		TUTORIALUI_MAX
+	} TUTORIALUI;
+
+	/* 関数 */
 	CTutorial() {};					// コンストラクタ
 	~CTutorial() {};					// デストラクタ
 
@@ -29,7 +38,8 @@ public:
 	void Draw(void);				// 描画
 
 private:
-	C2DUi *pC2dui;					// ２DUIポインタ
+	/* 変数 */
+	C2DUi *pC2dui[TUTORIALUI_MAX];					// ２DUIポインタ
 };
 
 #endif

@@ -54,6 +54,9 @@ public:
 		NAME_SKIPENTER,
 		NAME_SHIFT_L,
 		NAME_SHIFT_R,
+		NAME_PIEN,
+		NAME_PIENBOMB,
+		NAME_TUTORIALDISCRIPTION,
 		NAME_MAX						// �ő吔
 	};
 	enum
