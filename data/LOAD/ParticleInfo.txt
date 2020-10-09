@@ -7,40 +7,54 @@
 SCRIPT
 
 #==============================================================================
-# [0] unknown
+# [0] Explosion
 #==============================================================================
 OFFSET
-	# 色ランダム
-	SET_COLRAND
-		RED
-		GREEN
-		BLUE
-	ENDSET_COLRAND
+	# サイズランダム
+	SET_SIZERAND
+		SIZEX = 10 30
+		SIZEY = 10 30
+	ENDSET_SIZERAND
+	# 角度ランダム
+	SET_ANGLERAND
+		MAX = 628
+		MIN = -313
+	ENDSET_ANGLERAND
 	# 方向ランダム
 	SET_VECTORRAND
 		VECTORX = 20 -10
 		VECTORY = 20 -10
 		VECTORZ = 20 -10
 	ENDSET_VECTORRAND
+	# スピードランダム
+	SET_SPEEDRAND
+		MAX = 5
+		MIN = 3
+	ENDSET_SPEEDRAND
+	# ライフランダム
+	SET_LIFERAND
+		MAX = 10
+		MIN = 30
+	ENDSET_LIFERAND
 	# 位置情報
 	POS = 0.0 0.0 0.0
 	# 色情報
 	COL = 1.0 1.0 1.0 1.0
-	COL_DESCREASE	# サイズ情報
-	SIZE = 50.0 50.0
-	SIZE_CHANGE = 74.0
+	# サイズ情報
+	SIZE = 0.0 0.0
+	SIZE_CHANGE = 2.0
 	# 回転情報
 	ROT = 0.0 0.0 0.0
 	# 方向情報
 	VECTOR = 0.0 0.0 0.0
 	# スピード情報
-	SPEED = 1.0
+	SPEED = 0.0
 	# ライフ情報
-	LIFE = 10
+	LIFE = 0
 	# フレーム情報
 	FRAME = 1
 	# 一度に出せる個数情報
-	NUMBER = 1
+	NUMBER = 30
 	# テクスチャータイプ情報
 	TEXTYPE = 0
 	# エフェクトタイプ情報
@@ -48,6 +62,100 @@ OFFSET
 	# パーティクルタイプ情報
 	PARTICLETYPE = 1
 	# ブレンドタイプ情報
-	BLEND = 1
+	BLEND = 3
+END_OFFSET
+#==============================================================================
+# [1] Fire
+#==============================================================================
+OFFSET
+	# 位置ランダム
+	SET_POSRAND
+		POSX = 10 -5
+		POSY = 0 0
+		POSZ = 0 0
+	ENDSET_POSRAND
+	# 色ランダム
+	SET_COLRAND
+		RED
+		GREEN
+	ENDSET_COLRAND
+	# サイズランダム
+	SET_SIZERAND
+		SIZEX = 20 30
+		SIZEY = 20 30
+	ENDSET_SIZERAND
+	# 位置情報
+	POS = 0.0 0.0 0.0
+	# 色情報
+	COL = 1.0 0.3 0.0 1.0
+	COL_DESCREASE	# サイズ情報
+	SIZE = 0.0 0.0
+	SIZE_DESCREASE	# 回転情報
+	ROT = 0.0 0.0 0.0
+	# 方向情報
+	VECTOR = 0.0 1.0 0.0
+	# スピード情報
+	SPEED = 3.0
+	# ライフ情報
+	LIFE = 50
+	# フレーム情報
+	FRAME = 1
+	# 一度に出せる個数情報
+	NUMBER = 5
+	# テクスチャータイプ情報
+	TEXTYPE = 0
+	# エフェクトタイプ情報
+	EFFECTTYPE = 2
+	# パーティクルタイプ情報
+	PARTICLETYPE = 1
+	# ブレンドタイプ情報
+	BLEND = 3
+END_OFFSET
+#==============================================================================
+# [2] Spark
+#==============================================================================
+OFFSET
+	# 方向ランダム
+	SET_VECTORRAND
+		VECTORX = 20 -10
+		VECTORY = 20 -10
+		VECTORZ = 20 -10
+	ENDSET_VECTORRAND
+	# スピードランダム
+	SET_SPEEDRAND
+		MAX = 10
+		MIN = 5
+	ENDSET_SPEEDRAND
+	# ライフランダム
+	SET_LIFERAND
+		MAX = 10
+		MIN = 20
+	ENDSET_LIFERAND
+	# 位置情報
+	POS = 0.0 0.0 0.0
+	# 色情報
+	COL = 1.0 0.5 0.0 1.0
+	COL_DESCREASE	# サイズ情報
+	SIZE = 50.0 50.0
+	SIZE_DESCREASE	# 回転情報
+	ROT = 0.0 0.0 0.0
+	# 方向情報
+	VECTOR = 0.0 0.0 0.0
+	# スピード情報
+	SPEED = 0.0
+	# ライフ情報
+	LIFE = 0
+	# フレーム情報
+	FRAME = 1
+	# 一度に出せる個数情報
+	NUMBER = 3
+	# テクスチャータイプ情報
+	TEXTYPE = 3
+	# エフェクトタイプ情報
+	EFFECTTYPE = 1
+	# パーティクルタイプ情報
+	PARTICLETYPE = 1
+	# ブレンドタイプ情報
+	BLEND = 3
 END_OFFSET
 END_SCRIPT
