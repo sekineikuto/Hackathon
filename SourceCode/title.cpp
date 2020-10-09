@@ -67,6 +67,7 @@ void CTitle::Init(void)
 	pC2dui[TITLEUI_PRESSENTERNAME]->GetFade()->nTiming = 30;
 	pC2dui[TITLEUI_PRESSENTERNAME]->GetFade()->fChangeValue = 1.0f / pC2dui[TITLEUI_PRESSENTERNAME]->GetFade()->nTiming;
 	pC2dui[TITLEUI_PRESSENTERNAME]->GetFade()->nAddSign = 1;
+
 	// プレスエンターアイコンの設定
 	set[TITLEUI_PRESSENTERICON].mask.unMask = C2DUi::MASK_FADE | C2DUi::MASK_FLASHING;
 	// プレスエンターのアイコン生成
@@ -75,6 +76,46 @@ void CTitle::Init(void)
 	pC2dui[TITLEUI_PRESSENTERICON]->GetFade()->nTiming = 30;
 	pC2dui[TITLEUI_PRESSENTERICON]->GetFade()->fChangeValue = 1.0f / pC2dui[TITLEUI_PRESSENTERICON]->GetFade()->nTiming;
 	pC2dui[TITLEUI_PRESSENTERICON]->GetFade()->nAddSign = 1;
+
+	// プレイヤー1アイコンの設定
+	set[TITLEUI_PLAYER1ICON].mask.unMask = C2DUi::MASK_FADE | C2DUi::MASK_FLASHING;
+	// プレイヤー1のアイコン生成
+	// *GETSIZEデモって来る
+	// 値を変える
+	// 更新バーテクスで変える
+	pC2dui[TITLEUI_PLAYER1ICON] = C2DUi::Create(set[TITLEUI_PLAYER1ICON]);
+	pC2dui[TITLEUI_PLAYER1ICON]->GetFade()->bLoop = true;
+	pC2dui[TITLEUI_PLAYER1ICON]->GetFade()->nTiming = 30;
+	pC2dui[TITLEUI_PLAYER1ICON]->GetFade()->fChangeValue = 1.0f / pC2dui[TITLEUI_PLAYER1ICON]->GetFade()->nTiming;
+	pC2dui[TITLEUI_PLAYER1ICON]->GetFade()->nAddSign = 1;
+
+	// プレイヤー2アイコンの設定
+	set[TITLEUI_PLAYER2ICON].mask.unMask = C2DUi::MASK_FADE | C2DUi::MASK_FLASHING;
+	// プレイヤー2のアイコン生成
+	pC2dui[TITLEUI_PLAYER2ICON] = C2DUi::Create(set[TITLEUI_PLAYER2ICON]);
+	pC2dui[TITLEUI_PLAYER2ICON]->GetFade()->bLoop = true;
+	pC2dui[TITLEUI_PLAYER2ICON]->GetFade()->nTiming = 30;
+	pC2dui[TITLEUI_PLAYER2ICON]->GetFade()->fChangeValue = 1.0f / pC2dui[TITLEUI_PLAYER2ICON]->GetFade()->nTiming;
+	pC2dui[TITLEUI_PLAYER2ICON]->GetFade()->nAddSign = 1;
+
+	// ピエン1アイコンの設定
+	set[TITLEUI_PIEN1].mask.unMask = C2DUi::MASK_FADE | C2DUi::MASK_FLASHING;
+	// ピエン1のアイコン生成
+	pC2dui[TITLEUI_PIEN1] = C2DUi::Create(set[TITLEUI_PIEN1]);
+	pC2dui[TITLEUI_PIEN1]->GetFade()->bLoop = true;
+	pC2dui[TITLEUI_PIEN1]->GetFade()->nTiming = 30;
+	pC2dui[TITLEUI_PIEN1]->GetFade()->fChangeValue = 1.0f / pC2dui[TITLEUI_PIEN1]->GetFade()->nTiming;
+	pC2dui[TITLEUI_PIEN1]->GetFade()->nAddSign = 1;
+
+	// ピエン2アイコンの設定
+	set[TITLEUI_PIEN2].mask.unMask = C2DUi::MASK_FADE | C2DUi::MASK_FLASHING;
+	// ピエン2のアイコン生成
+	pC2dui[TITLEUI_PIEN2] = C2DUi::Create(set[TITLEUI_PIEN2]);
+	pC2dui[TITLEUI_PIEN2]->GetFade()->bLoop = true;
+	pC2dui[TITLEUI_PIEN2]->GetFade()->nTiming = 30;
+	pC2dui[TITLEUI_PIEN2]->GetFade()->fChangeValue = 1.0f / pC2dui[TITLEUI_PIEN2]->GetFade()->nTiming;
+	pC2dui[TITLEUI_PIEN2]->GetFade()->nAddSign = 1;
+
 	this->m_State = STATE_NORMAL;
 
 	CMode::Init(STATE_NORMAL, 30);
@@ -112,6 +153,8 @@ void CTitle::Update(void)
 	if (CManager::GetKeyboard().GetTrigger(DIK_RETURN))
 	{
 		this->SetState(STATE_OUT);
+		// SEを入れる
+
 	}
 #ifdef _DEBUG
 	// テストパーティクル
@@ -127,5 +170,19 @@ void CTitle::Update(void)
 // 描画
 //-------------------------------------------------------------------------------------------------------------
 void CTitle::Draw(void)
+{
+}
+
+//-------------------------------------------------------------------------------------------------------------
+// サイズ変更の更新処理
+//-------------------------------------------------------------------------------------------------------------
+void CTitle::Update_SizeChange(void)
+{
+}
+
+//-------------------------------------------------------------------------------------------------------------
+// 角度変更の更新処理
+//-------------------------------------------------------------------------------------------------------------
+void CTitle::Update_RotChange(void)
 {
 }

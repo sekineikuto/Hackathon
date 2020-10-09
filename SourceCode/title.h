@@ -31,6 +31,10 @@ public:
 		TITLEUI_NAME,			// 名前
 		TITLEUI_PRESSENTERNAME,	// プレスエンター名
 		TITLEUI_PRESSENTERICON,	// プレスエンターアイコン
+		TITLEUI_PLAYER1ICON,	// プレイヤー1アイコン
+		TITLEUI_PLAYER2ICON,	// プレイヤー2アイコン
+		TITLEUI_PIEN1,			// ピエン1
+		TITLEUI_PIEN2,			// ピエン2
 		TITLEUI_MAX
 	} TITLEUI;
 
@@ -45,6 +49,11 @@ public:
 	void Draw(void);				// 描画
 
 private:
+	/* 関数 */
+	// サイズ変更の更新処理
+	void Update_SizeChange(void);
+	// 角度変更の更新処理
+	void Update_RotChange(void);
 	/* 変数 */
 	C2DUi *pC2dui[TITLEUI_MAX];					// ２DUIポインタ
 };

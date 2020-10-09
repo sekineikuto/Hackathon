@@ -89,6 +89,8 @@ void CTutorial::Update(void)
 	if (CManager::GetKeyboard().GetTrigger(DIK_RETURN))
 	{
 		this->SetState(STATE_OUT);
+		// SE‚ð“ü‚ê‚é
+
 	}
 }
 

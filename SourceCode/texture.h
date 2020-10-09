@@ -75,6 +75,12 @@ public:
 		NAME_ANGLEGAUGE,
 		NAME_POWERGAUGE,
 		NAME_DRAW,
+		NAME_1ST,
+		NAME_2ND,
+		NAME_3RD,
+		NAME_4TH,
+		NAME_5TH,
+		NAME_RANKING,
 		NAME_MAX						// �ő吔
 	};
 	enum
