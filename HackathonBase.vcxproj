@@ -153,9 +153,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="SourceCode\2Deffect.cpp" />
     <ClCompile Include="SourceCode\2DUI.cpp" />
+    <ClCompile Include="SourceCode\3Dparticle.cpp" />
+    <ClCompile Include="SourceCode\Calculation.cpp" />
     <ClCompile Include="SourceCode\camera.cpp" />
     <ClCompile Include="SourceCode\DebugProc.cpp" />
+    <ClCompile Include="SourceCode\effect.cpp" />
     <ClCompile Include="SourceCode\fade.cpp" />
     <ClCompile Include="SourceCode\game.cpp" />
     <ClCompile Include="SourceCode\gamepad.cpp" />
@@ -176,15 +180,21 @@
     <ClCompile Include="SourceCode\result.cpp" />
     <ClCompile Include="SourceCode\Scene.cpp" />
     <ClCompile Include="SourceCode\Scene2D.cpp" />
+    <ClCompile Include="SourceCode\scene_load.cpp" />
     <ClCompile Include="SourceCode\sound.cpp" />
     <ClCompile Include="SourceCode\texture.cpp" />
     <ClCompile Include="SourceCode\title.cpp" />
     <ClCompile Include="SourceCode\tutorial.cpp" />
+    <ClCompile Include="SourceCode\ui.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="SourceCode\2Deffect.h" />
     <ClInclude Include="SourceCode\2DUI.h" />
+    <ClInclude Include="SourceCode\3Dparticle.h" />
+    <ClInclude Include="SourceCode\Calculation.h" />
     <ClInclude Include="SourceCode\camera.h" />
     <ClInclude Include="SourceCode\DebugProc.h" />
+    <ClInclude Include="SourceCode\effect.h" />
     <ClInclude Include="SourceCode\fade.h" />
     <ClInclude Include="SourceCode\game.h" />
     <ClInclude Include="SourceCode\gamepad.h" />
@@ -205,10 +215,12 @@
     <ClInclude Include="SourceCode\result.h" />
     <ClInclude Include="SourceCode\Scene.h" />
     <ClInclude Include="SourceCode\Scene2D.h" />
+    <ClInclude Include="SourceCode\scene_load.h" />
     <ClInclude Include="SourceCode\sound.h" />
     <ClInclude Include="SourceCode\texture.h" />
     <ClInclude Include="SourceCode\title.h" />
     <ClInclude Include="SourceCode\tutorial.h" />
+    <ClInclude Include="SourceCode\ui.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SourceCode\mylibrary.inl" />
