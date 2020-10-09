@@ -31,39 +31,35 @@ CTitle * CTitle::Create(void)
 //-------------------------------------------------------------------------------------------------------------
 void CTitle::Init(void)
 {
+	// 変数宣言
+	C2DUi::SETING2DUI set[2];	// UI設定用変数
 	// 2Dエフェクト生成
 	C2DEffect::Create();
 	// UIの取得
-	std::vector<CUi::UI_LOAD> Ui_Load = CUi::GetUi(CUi::UITYPE_GAMEUI);
-	C2DUi::SETING2DUI set[2];
-	// 0番目
-	set[0].bDisp = true;
-	set[0].col = MYLIB_D3DXCOR_SET;
-	set[0].fRotation = 0.0f;
-	set[0].mask.unMask = C2DUi::MASK_FADE | C2DUi::MASK_FLASHING;
-	set[0].nTextureID = 2;
-	set[0].nValue = 123456789;
-	set[0].pos = D3DXVECTOR3(640.0f, 600.0f, 0.0f);
-	set[0].size = D3DXVECTOR2(240.0f, 60.0f);
-	pC2dui = C2DUi::Create(set[0]);
+	std::vector<CUi::UI_LOAD> Ui_Load = CUi::GetUi(CUi::UITYPE_TITLEUI);
+	// UI全体の設定
+	for (int nCntUi = 0; nCntUi < (signed)Ui_Load.size(); nCntUi++)
+	{
+		set[nCntUi].bDisp = true;
+		set[nCntUi].col = Ui_Load[nCntUi].col;
+		set[nCntUi].fRotation = Ui_Load[nCntUi].fRot;
+		set[nCntUi].nTextureID = Ui_Load[nCntUi].nTexType;
+		set[nCntUi].pos = Ui_Load[nCntUi].pos;
+		set[nCntUi].size = Ui_Load[nCntUi].size;
+	}
+	// タイトルの設定
+	// タイトルの生成
+	C2DUi::Create(set[0]);
+
+	// プレスエンターの設定
+	set[1].mask.unMask = C2DUi::MASK_FADE | C2DUi::MASK_FLASHING;
+	set[1].nValue = 123456789;
+	// プレスエンターの生成
+	pC2dui = C2DUi::Create(set[1]);
 	pC2dui->GetFade()->bLoop = true;
 	pC2dui->GetFade()->nTiming = 30;
 	pC2dui->GetFade()->fChangeValue = 1.0f / pC2dui->GetFade()->nTiming;
 	pC2dui->GetFade()->nAddSign = 1;
-
-	// 1番目
-	set[1].bDisp = true;
-	set[1].col = Ui_Load[0].col;
-	set[1].fRotation = Ui_Load[0].fRot;
-	set[1].mask.unMask = C2DUi::MASK_FADE | C2DUi::MASK_FLASHING;
-	set[1].nTextureID = Ui_Load[0].nTexType;
-	set[1].nValue = 123456789;
-	set[1].pos = Ui_Load[0].pos;
-	set[1].size = Ui_Load[0].size;
-
-	pC2dui->GetFlashing()->m_nTiming = 3;
-
-	C2DUi::Create(set[1]);
 	this->m_State = STATE_NORMAL;
 
 	CMode::Init(STATE_NORMAL, 30);
