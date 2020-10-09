@@ -33,8 +33,12 @@ data/TEXTURE/UI/TutorialDiscription.png
 data/TEXTURE/UI/dot.png
 data/TEXTURE/PLAYER/PB00.png
 data/TEXTURE/PLAYER/PB01.png
+data/TEXTURE/PLAYER/PB02.png
+data/TEXTURE/PLAYER/PB03.png
 data/TEXTURE/PLAYER/PY00.png
 data/TEXTURE/PLAYER/PY01.png
+data/TEXTURE/PLAYER/PY02.png
+data/TEXTURE/PLAYER/PY03.png
 data/TEXTURE/UI/TITLE_BG000.png
 data/TEXTURE/UI/pienDistance.png
 data/TEXTURE/UI/win.png

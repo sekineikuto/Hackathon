@@ -772,7 +772,7 @@ bool CMylibrary::Test3DInsidePlanePolygon(CONST D3DXVECTOR3 & posA, CONST D3DXVE
 	vecCA.z = posA.z - posC.z;	// CA辺
 	vecCA.y = 0.0f;				// CA辺
 
-	
+
 
 	// 外積の計算
 	D3DXVec3Cross(&CrossResult, &vecAB, &vecBP);
@@ -1389,7 +1389,7 @@ void CMylibrary::UsingQuaternionCalculatePos(D3DXVECTOR3 *pOut, CONST D3DXVECTOR
 
 	// 方向ベクトルの合計
 	float fNorm = Vec.x + Vec.y + Vec.z;
-	
+
 	pOut->x = (fRot_00 * Vec.x + fRot_10 * Vec.y + fRot_20 * Vec.z) / fNorm;
 	pOut->y = (fRot_01 * Vec.x + fRot_11 * Vec.y + fRot_21 * Vec.z) / fNorm;
 	pOut->z = (fRot_02 * Vec.x + fRot_12 * Vec.y + fRot_22 * Vec.z) / fNorm;
