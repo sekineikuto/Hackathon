@@ -94,10 +94,14 @@ void CTitle::Update(void)
 	{
 		this->SetState(STATE_OUT);
 	}
+#ifdef _DEBUG
+	// テストパーティクル
 	if (CManager::GetKeyboard().GetTrigger(DIK_SPACE))
 	{
-		C3DParticle::Create(C3DParticle::PARTICLE_ID_UNKNOWN,D3DXVECTOR3(0.0f,0.0f,0.0f));
+		C3DParticle::Create(C3DParticle::PARTICLE_ID_EXPLOSION, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 	}
+#endif // _DEBUG
+
 }
 
 //-------------------------------------------------------------------------------------------------------------

@@ -37,7 +37,9 @@ public:
 	typedef enum
 	{
 		PARTICLE_ID_NONE = -1,
-		PARTICLE_ID_UNKNOWN,		// (ŸŽè‚É•Ï‚¦‚Ä‚à‚¢‚¢‚æ)
+		PARTICLE_ID_EXPLOSION,		// ”š”­_”š’e‚ª”š”­‚µ‚½‚Æ‚«
+		PARTICLE_ID_FIRE,			// ‰Î_“±‰Îü
+		PARTICLE_ID_SPARK,			// ‰Î‰Ô_“±‰Îü
 		PARTICLE_ID_MAX,
 	} PARTICLE_ID;
 	/* \‘¢‘Ì */
