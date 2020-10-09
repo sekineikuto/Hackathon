@@ -14,17 +14,23 @@
 #include "renderer.h"
 #include "keyboard.h"
 #include "fade.h"
+#include "score.h"
 
 //-------------------------------------------------------------------------------------------------------------
 // マクロ定義
 //-------------------------------------------------------------------------------------------------------------
-#define FILENAME_RANKING	("data/TEXT/Ranking.txt")	// 読み書きするファイル名
 
 //-------------------------------------------------------------------------------------------------------------
 // 静的メンバ変数の初期化
 //-------------------------------------------------------------------------------------------------------------
-float CRanking::m_fPlayerScore = 0.0f;
-float CRanking::m_fDefaultScore[MAX_NUMSCORE] = {};
+D3DXVECTOR3 CRanking::m_scorePos[MAX_NUMRANK] =
+{
+	D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT/ 2, 0.0f),
+	D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0f),
+	D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0f),
+	D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0f),
+	D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0f)
+};
 
 //-------------------------------------------------------------------------------------------------------------
 // 生成
@@ -44,7 +50,7 @@ CRanking * CRanking::Create(void)
 //-------------------------------------------------------------------------------------------------------------
 void CRanking::Init(void)
 {
-
+	m_pScore = CScore::Create(m_scorePos[0], D3DXVECTOR2(100.0f, 50.0f), CScore::GetDefaultScore(0));
 }
 
 //-------------------------------------------------------------------------------------------------------------
@@ -52,6 +58,12 @@ void CRanking::Init(void)
 //-------------------------------------------------------------------------------------------------------------
 void CRanking::Uninit(void)
 {
+	if (m_pScore)
+	{
+		m_pScore->Uninit();
+		delete m_pScore;
+		m_pScore = nullptr;
+	}
 }
 
 //-------------------------------------------------------------------------------------------------------------
@@ -59,6 +71,9 @@ void CRanking::Uninit(void)
 //-------------------------------------------------------------------------------------------------------------
 void CRanking::Update(void)
 {
+	if (m_pScore)
+		m_pScore->Update();
+
 	// キー入力でタイトルへ
 	if (CManager::GetKeyboard().GetTrigger(DIK_RETURN))
 		CManager::GetRenderer().GetFade()->SetFade(CManager::MODE_TITLE);
@@ -69,4 +84,6 @@ void CRanking::Update(void)
 //-------------------------------------------------------------------------------------------------------------
 void CRanking::Draw(void)
 {
+	if (m_pScore)
+		m_pScore->Draw();
 }
