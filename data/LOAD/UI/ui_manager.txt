@@ -1,1 +1,2 @@
 data/LOAD/UI/TitleUi.txt
+data/LOAD/UI/TutorialUi.txt

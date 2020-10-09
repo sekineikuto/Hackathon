@@ -1,7 +1,7 @@
 //*************************************************************************************************************
 //
-// タイトル処理 [title.h]
-// Author:IKUTO SEKINE
+// チュートリアル処理 [tutorial.h]
+// Author:KOKI NISHIYAMA
 //
 //*************************************************************************************************************
 //-------------------------------------------------------------------------------------------------------------
@@ -12,6 +12,7 @@
 #include "keyboard.h"
 #include "renderer.h"
 #include "fade.h"
+#include "ui.h"
 
 //-------------------------------------------------------------------------------------------------------------
 // 生成
@@ -28,23 +29,23 @@ CTutorial * CTutorial::Create(void)
 //-------------------------------------------------------------------------------------------------------------
 void CTutorial::Init(void)
 {
-	C2DUi::SETING2DUI set;
-	set.bDisp = true;
-	set.col = MYLIB_D3DXCOR_SET;
-	set.fRotation = 0.0f;
-	set.mask.unMask = C2DUi::MASK_FADE | C2DUi::MASK_FLASHING;
-	set.nTextureID = 2;
-	set.nValue = 123456789;
-	set.pos = D3DXVECTOR3(640.0f, 600.0f, 0.0f);
-	set.size = D3DXVECTOR2(240.0f, 60.0f);
-	pC2dui = C2DUi::Create(set);
+	C2DUi::SETING2DUI set[TUTORIALUI_MAX];
+	// UIの取得
+	std::vector<CUi::UI_LOAD> Ui_Load = CUi::GetUi(CUi::UITYPE_TUTORIALUI);
+	// UI全体の設定
+	for (int nCntUi = 0; nCntUi < (signed)Ui_Load.size(); nCntUi++)
+	{
+		set[nCntUi].bDisp = true;
+		set[nCntUi].col = Ui_Load[nCntUi].col;
+		set[nCntUi].fRotation = Ui_Load[nCntUi].fRot;
+		set[nCntUi].nTextureID = Ui_Load[nCntUi].nTexType;
+		set[nCntUi].pos = Ui_Load[nCntUi].pos;
+		set[nCntUi].size = Ui_Load[nCntUi].size;
+	}
 
-	pC2dui->GetFade()->bLoop = true;
-	pC2dui->GetFade()->nTiming = 30;
-	pC2dui->GetFade()->fChangeValue = 1.0f / pC2dui->GetFade()->nTiming;
-	pC2dui->GetFade()->nAddSign = 1;
-
-	pC2dui->GetFlashing()->m_nTiming = 3;
+	set[TUTORIALUI_DISCRIPTION].mask.unMask = C2DUi::MASK_FLASHING;
+	pC2dui[TUTORIALUI_DISCRIPTION] = C2DUi::Create(set[TUTORIALUI_DISCRIPTION]);
+	pC2dui[TUTORIALUI_DISCRIPTION]->GetFlashing()->m_nTiming = 3;
 
 	this->m_State = STATE_NORMAL;
 
@@ -65,11 +66,10 @@ void CTutorial::Update(void)
 {
 	if (this->m_State == STATE_NORMAL)
 	{
-		pC2dui->GetFade()->Update(pC2dui->GetImage());
 	}
 	else if (this->m_State == STATE_OUT)
 	{
-		pC2dui->GetFlashing()->Update(pC2dui);
+		pC2dui[TUTORIALUI_DISCRIPTION]->GetFlashing()->Update(pC2dui[TUTORIALUI_DISCRIPTION]);
 		if (this->m_nCntState == this->m_nMaxCntState)
 		{
 			CManager::GetRenderer().GetFade()->SetFade(CManager::MODE_GAME);

@@ -1,7 +1,7 @@
 //*************************************************************************************************************
 //
 // タイトル処理 [title.h]
-// Author:IKUTO SEKINE
+// Author:KOKI NISHIYAMA
 //
 //*************************************************************************************************************
 //-------------------------------------------------------------------------------------------------------------
@@ -32,7 +32,7 @@ CTitle * CTitle::Create(void)
 void CTitle::Init(void)
 {
 	// 変数宣言
-	C2DUi::SETING2DUI set[2];	// UI設定用変数
+	C2DUi::SETING2DUI set[TITLEUI_MAX];	// UI設定用変数
 	// 2Dエフェクト生成
 	C2DEffect::Create();
 	// UIの取得
@@ -48,18 +48,30 @@ void CTitle::Init(void)
 		set[nCntUi].size = Ui_Load[nCntUi].size;
 	}
 	// タイトルの設定
+	set[TITLEUI_NAME].mask.unMask = C2DUi::MASK_FADE | C2DUi::MASK_FLASHING;
 	// タイトルの生成
-	C2DUi::Create(set[0]);
+	pC2dui[TITLEUI_NAME] = C2DUi::Create(set[TITLEUI_NAME]);
+	pC2dui[TITLEUI_NAME]->GetFade()->bLoop = true;
+	pC2dui[TITLEUI_NAME]->GetFade()->nTiming = 90;
+	pC2dui[TITLEUI_NAME]->GetFade()->fChangeValue = 1.0f / pC2dui[TITLEUI_NAME]->GetFade()->nTiming;
+	pC2dui[TITLEUI_NAME]->GetFade()->nAddSign = 1;
 
 	// プレスエンターの設定
-	set[1].mask.unMask = C2DUi::MASK_FADE | C2DUi::MASK_FLASHING;
-	set[1].nValue = 123456789;
+	set[TITLEUI_PRESSENTERNAME].mask.unMask = C2DUi::MASK_FADE | C2DUi::MASK_FLASHING;
 	// プレスエンターの生成
-	pC2dui = C2DUi::Create(set[1]);
-	pC2dui->GetFade()->bLoop = true;
-	pC2dui->GetFade()->nTiming = 30;
-	pC2dui->GetFade()->fChangeValue = 1.0f / pC2dui->GetFade()->nTiming;
-	pC2dui->GetFade()->nAddSign = 1;
+	pC2dui[TITLEUI_PRESSENTERNAME] = C2DUi::Create(set[TITLEUI_PRESSENTERNAME]);
+	pC2dui[TITLEUI_PRESSENTERNAME]->GetFade()->bLoop = true;
+	pC2dui[TITLEUI_PRESSENTERNAME]->GetFade()->nTiming = 30;
+	pC2dui[TITLEUI_PRESSENTERNAME]->GetFade()->fChangeValue = 1.0f / pC2dui[TITLEUI_PRESSENTERNAME]->GetFade()->nTiming;
+	pC2dui[TITLEUI_PRESSENTERNAME]->GetFade()->nAddSign = 1;
+	// プレスエンターアイコンの設定
+	set[TITLEUI_PRESSENTERICON].mask.unMask = C2DUi::MASK_FADE | C2DUi::MASK_FLASHING;
+	// プレスエンターのアイコン生成
+	pC2dui[TITLEUI_PRESSENTERICON] = C2DUi::Create(set[TITLEUI_PRESSENTERICON]);
+	pC2dui[TITLEUI_PRESSENTERICON]->GetFade()->bLoop = true;
+	pC2dui[TITLEUI_PRESSENTERICON]->GetFade()->nTiming = 30;
+	pC2dui[TITLEUI_PRESSENTERICON]->GetFade()->fChangeValue = 1.0f / pC2dui[TITLEUI_PRESSENTERICON]->GetFade()->nTiming;
+	pC2dui[TITLEUI_PRESSENTERICON]->GetFade()->nAddSign = 1;
 	this->m_State = STATE_NORMAL;
 
 	CMode::Init(STATE_NORMAL, 30);
@@ -79,11 +91,14 @@ void CTitle::Update(void)
 {
 	if (this->m_State == STATE_NORMAL)
 	{
-		pC2dui->GetFade()->Update(pC2dui->GetImage());
+		pC2dui[TITLEUI_NAME]->GetFade()->Update(pC2dui[TITLEUI_NAME]->GetImage());
+		pC2dui[TITLEUI_PRESSENTERNAME]->GetFade()->Update(pC2dui[TITLEUI_PRESSENTERNAME]->GetImage());
+		pC2dui[TITLEUI_PRESSENTERICON]->GetFade()->Update(pC2dui[TITLEUI_PRESSENTERICON]->GetImage());
 	}
 	else if (this->m_State == STATE_OUT)
 	{
-		pC2dui->GetFlashing()->Update(pC2dui);
+		pC2dui[TITLEUI_NAME]->GetFlashing()->Update(pC2dui[TITLEUI_NAME]);
+		pC2dui[TITLEUI_PRESSENTERNAME]->GetFlashing()->Update(pC2dui[TITLEUI_PRESSENTERNAME]);
 		if (this->m_nCntState == this->m_nMaxCntState)
 		{
 			CManager::GetRenderer().GetFade()->SetFade(CManager::MODE_TUTORIAL);
