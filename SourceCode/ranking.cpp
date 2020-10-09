@@ -17,6 +17,7 @@
 #include "score.h"
 #include "texture.h"
 #include "result.h"
+#include "sound.h"
 
 //-------------------------------------------------------------------------------------------------------------
 // マクロ定義
@@ -143,7 +144,15 @@ void CRanking::Update(void)
 
 	// キー入力でタイトルへ
 	if (CManager::GetKeyboard().GetTrigger(DIK_RETURN))
-		CManager::GetRenderer().GetFade()->SetFade(CManager::MODE_TITLE);
+	{
+		if (CManager::GetRenderer().GetFade()->GetFadeState() == CFade::FADE_NONE)
+		{
+			CManager::GetRenderer().GetFade()->SetFade(CManager::MODE_TITLE);
+			// SEを入れる
+			CManager::GetSound().PlaySound(CSound::SOUND_LABEL_SE_ENTER);
+
+		}
+	}
 }
 
 //-------------------------------------------------------------------------------------------------------------

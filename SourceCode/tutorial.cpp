@@ -97,9 +97,12 @@ void CTutorial::Update(void)
 	}
 	if (CManager::GetKeyboard().GetTrigger(DIK_RETURN))
 	{
-		this->SetState(STATE_OUT);
-		// SE‚ð“ü‚ê‚é
-		CManager::GetSound().PlaySound(CSound::SOUND_LABEL_SE_ENTER);
+		if (CManager::GetRenderer().GetFade()->GetFadeState() == CFade::FADE_NONE)
+		{
+			this->SetState(STATE_OUT);
+			// SE‚ð“ü‚ê‚é
+			CManager::GetSound().PlaySound(CSound::SOUND_LABEL_SE_ENTER);
+		}
 	}
 }
 
