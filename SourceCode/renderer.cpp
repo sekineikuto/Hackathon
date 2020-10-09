@@ -13,6 +13,7 @@
 #include "manager.h"
 #include "DebugProc.h"
 #include "camera.h"
+#include "mode.h"
 
 //-------------------------------------------------------------------------------------------------------------
 // Ã“Iƒƒ“ƒo•Ï”‚Ì‰Šú‰»
@@ -188,7 +189,7 @@ void CRenderer::Draw(void)
 	{
 		CManager::GetCamera().Set();
 		CScene::DrawAll();
-
+		CManager::GetModeClass().Draw();
 		m_pFade->Draw();
 #ifdef _DEBUG
 		CDebugProc::Draw();

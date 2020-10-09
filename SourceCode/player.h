@@ -20,6 +20,18 @@ class CScene2D;
 class CPlayer : public CScene
 {
 public:
+
+	typedef enum
+	{
+		STATE_NOEN = -1,
+		STATE_STANDBY,
+		STATE_THROW,
+		STATE_EXPOSURE,
+		STATE_NOTEXPOSURE,
+		STATE_MAX,
+	}STATE;
+
+
 	CPlayer():CScene(PRIORITY_PLAYER){};		// コンストラクタ
 	~CPlayer() {};								// デストラクタ
 
@@ -30,8 +42,16 @@ public:
 	void Update(void);							// 更新
 	void Draw(void);							// 描画
 
+	void UpdateStandby(void);
+	void UpdateThrow(void);
+
+	void SetState(STATE state) { m_State = state; }
+	STATE & GetState(void) { return m_State; }
+
+	D3DXVECTOR3 &GetPos(void);
 private:
 	CScene2D *m_pScene2D;					// シーン２Dポインタ
+	STATE     m_State;						// 状態
 };
 
 #endif

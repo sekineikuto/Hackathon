@@ -23,17 +23,21 @@
 #include "texture.h"
 
 //-------------------------------------------------------------------------------------------------------------
-// マクロ定義
+// マクロ定義 
 //-------------------------------------------------------------------------------------------------------------
-#define GAME_GAGE_MAX	200.0f
+#define GAME_GAGE_MAX			150.0f
+#define GAME_EXPOSURE_RANGE		277.0f
 
 //-------------------------------------------------------------------------------------------------------------
 // 静的メンバ変数の初期化
 //-------------------------------------------------------------------------------------------------------------
 CGame::PLAYEROFFSET CGame::m_offset[PLAYER_MAX] = {
 	{ D3DXVECTOR3(100.0f, 550.0f, 0.0f),D3DXVECTOR2(50.0f, 50.0f) },
-	{ D3DXVECTOR3(100.0f, 550.0f, 0.0f),D3DXVECTOR2(50.0f, 50.0f) },
+	{ D3DXVECTOR3(1180.0f, 550.0f, 0.0f),D3DXVECTOR2(50.0f, 50.0f) },
 };
+
+CGame::GAMEWINSTATE CGame::m_GameWinState = WINSTATE_NONE;
+CGame::PLAYERPIEN   CGame::m_PlayerPien;
 
 //-------------------------------------------------------------------------------------------------------------
 // 生成
@@ -109,8 +113,7 @@ void CGame::Init(void)
 		m_pBomb[nCntPlayer] = CBomb::Create(m_offset[nCntPlayer].pos, m_offset[nCntPlayer].size, nCntPlayer);
 	}
 
-	CMode::Init(STATE_NORMAL, 10);
-
+	CMode::Init(STATE_NORMAL, 30);
 
 	for (int nCntaGage = 0; nCntaGage < SCAL_P2_GAGE_MAX ; nCntaGage++)
 	{
@@ -186,14 +189,51 @@ void CGame::UpdateNormal(void)
 			{
 				m_bMoveGage[SCAL_P2_GAGE_X] = false;
 				m_bMoveGage[SCAL_P2_GAGE_Y] = false;
-				m_pBomb[PLAYER_2]->Fire(m_fGageScaForce[SCAL_P2_GAGE_X], m_fGageScaForce[SCAL_P2_GAGE_Y]);
+				m_pBomb[PLAYER_2]->Fire(m_fGageScal[SCAL_P2_GAGE_X], m_fGageScal[SCAL_P2_GAGE_Y]);
 			}
 
 			if (CManager::GetKeyboard().GetTrigger(DIK_LSHIFT))
 			{
 				m_bMoveGage[SCAL_P1_GAGE_X] = false;
 				m_bMoveGage[SCAL_P1_GAGE_Y] = false;
-				m_pBomb[PLAYER_1]->Fire(m_fGageScaForce[SCAL_P1_GAGE_X], m_fGageScaForce[SCAL_P1_GAGE_Y]);
+				m_pBomb[PLAYER_1]->Fire(m_fGageScal[SCAL_P1_GAGE_X], m_fGageScal[SCAL_P1_GAGE_Y]);
+			}
+
+			if (m_pBomb[PLAYER_1]->GetState() ==CBomb::STATE_LANDING &&
+				m_pBomb[PLAYER_2]->GetState() == CBomb::STATE_LANDING)
+			{
+				float fDistance1 =  m_pBomb[PLAYER_1]->GetDistance();
+				float fDistance2 =  m_pBomb[PLAYER_2]->GetDistance();
+
+				if (fDistance1 == fDistance2)
+				{
+					m_GameWinState = WINSTATE_1P2P;
+				}
+				else if(fDistance1 > fDistance2)
+				{
+					m_GameWinState = WINSTATE_1P;
+				}
+				else
+				{
+					m_GameWinState = WINSTATE_2P;
+				}
+
+				// プレイヤー1とプレエイヤー2の爆弾の距離
+				float fDistanceP1_B2 = m_pPlayer[PLAYER_1]->GetPos().x - m_pBomb[PLAYER_2]->GetPos().x;
+				m_pPlayer[PLAYER_1]->SetState((abs(fDistanceP1_B2) >= GAME_EXPOSURE_RANGE) ? CPlayer::STATE_NOTEXPOSURE : CPlayer::STATE_EXPOSURE);
+
+				// プレイヤー2とプレエイヤー1の爆弾の距離
+				float fDistanceP2_B1 = m_pPlayer[PLAYER_2]->GetPos().x - m_pBomb[PLAYER_1]->GetPos().x;
+				m_pPlayer[PLAYER_2]->SetState((abs(fDistanceP2_B1) >= GAME_EXPOSURE_RANGE) ? CPlayer::STATE_NOTEXPOSURE : CPlayer::STATE_EXPOSURE);
+
+				cout << "とんだ距離1 == " << fDistance1 << "\n";
+				cout << "とんだ距離2 == " << fDistance2 << "\n";
+
+				cout << "ピエン == " << fDistanceP1_B2 << "\n";
+				cout << "ピエン == " << fDistanceP2_B1 << "\n";
+
+				this->SetState(STATE_OUT);
+				m_nCntState = 0;
 			}
 
 			MLB_DEFAULT:break;
@@ -258,11 +298,12 @@ void CGame::GageUpdate(void)
 //-------------------------------------------------------------------------------------------------------------
 void CGame::GageScaForceShuffle(float * pGageScalForce)
 {
-	*pGageScalForce = (rand() % 5) * 0.02f;
+	*pGageScalForce = (rand() % 5 + 5) * 0.01f;
 }
 
 bool CGame::GageScalClamp(float * pGageScal, int *pSign)
 {
+
 	if (*pGageScal <= 0.0f)
 	{
 		*pGageScal = 0.0f;

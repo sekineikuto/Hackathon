@@ -56,12 +56,27 @@ public:
 		PLAYER_MAX,
 	};
 
+	typedef enum
+	{
+		WINSTATE_NONE = -1,
+		WINSTATE_1P,
+		WINSTATE_2P,
+		WINSTATE_1P2P,
+		WINSTATE_MAX
+	} GAMEWINSTATE;
 
 	typedef struct
 	{
 		D3DXVECTOR3 pos;
 		D3DXVECTOR2 size;
 	} PLAYEROFFSET;
+
+	typedef struct PLAYERPIEN
+	{
+		PLAYERPIEN() :bPlayer1Pien(false), bPlayer2Pien(false) {}
+		bool bPlayer1Pien;
+		bool bPlayer2Pien;
+	} PLAYERPIEN;
 
 	CGame() {};					// コンストラクタ
 	~CGame() {};					// デストラクタ
@@ -80,15 +95,19 @@ private:
 	void GageScaForceShuffle(float *pGageScalForce);
 	bool GageScalClamp(float *pGageScal,int *pSign);
 
-	C2DUi *pC2dui[UI_MAX];					// ２DUIポインタ
+	C2DUi *pC2dui[UI_MAX];						// ２DUIポインタ
 	CPlayer *m_pPlayer[PLAYER_MAX];				// プレイヤポインタ
-	CBomb *m_pBomb[PLAYER_MAX];				// 爆弾ポインタ
+	CBomb *m_pBomb[PLAYER_MAX];					// 爆弾ポインタ
 	static PLAYEROFFSET m_offset[PLAYER_MAX];
 
 	float m_fGageScal[SCAL_P2_GAGE_MAX];
 	float m_fGageScaForce[SCAL_P2_GAGE_MAX];
 	int m_fGageScaSign[SCAL_P2_GAGE_MAX];
 	bool m_bMoveGage[SCAL_P2_GAGE_MAX];
+
+	static GAMEWINSTATE m_GameWinState;
+	static PLAYERPIEN   m_PlayerPien;
+	
 };
 
 #endif

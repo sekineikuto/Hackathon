@@ -55,3 +55,16 @@ void CPlayer::Draw(void)
 		m_pScene2D->Draw();
 	}
 }
+
+void CPlayer::UpdateStandby(void)
+{
+}
+
+void CPlayer::UpdateThrow(void)
+{
+}
+
+D3DXVECTOR3 & CPlayer::GetPos(void)
+{
+	return *m_pScene2D->GetPosition();
+}
