@@ -99,6 +99,7 @@ void CTitle::Update(void)
 	{
 		pC2dui[TITLEUI_NAME]->GetFlashing()->Update(pC2dui[TITLEUI_NAME]);
 		pC2dui[TITLEUI_PRESSENTERNAME]->GetFlashing()->Update(pC2dui[TITLEUI_PRESSENTERNAME]);
+		pC2dui[TITLEUI_PRESSENTERICON]->GetFlashing()->Update(pC2dui[TITLEUI_PRESSENTERICON]);
 		if (this->m_nCntState == this->m_nMaxCntState)
 		{
 			CManager::GetRenderer().GetFade()->SetFade(CManager::MODE_TUTORIAL);
