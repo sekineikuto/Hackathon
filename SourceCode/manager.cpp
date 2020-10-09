@@ -204,15 +204,19 @@ void CManager::SetMode(MODE mode)
 	{
 	case MODE_TITLE:
 		m_pModeClass = CTitle::Create();
+		// BGM‚ð“ü‚ê‚é
 		break;
 	case MODE_TUTORIAL:
 		m_pModeClass = CTutorial::Create();
+		// BGM‚ð“ü‚ê‚é
 		break;
 	case MODE_GAME:
 		m_pModeClass = CGame::Create();
+		// BGM‚ð“ü‚ê‚é
 		break;
 	case MODE_RESULT:
 		m_pModeClass = CResult::Create();
+		// BGM‚ð“ü‚ê‚é
 		break;
 	case MODE_RANKING:
 		m_pModeClass = CRanking::Create();

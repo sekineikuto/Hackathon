@@ -17,21 +17,18 @@ public:
 	// サウンドラベル
 	typedef enum
 	{
-		SOUND_LABEL_NONE = -1,				// 無し
+		SOUND_LABEL_NONE = -1,			// 無し
 		/* ----- BGM ----- */
-		SOUND_LABEL_BGM_TITLE = 0,			// タイトル
-		SOUND_LABEL_BGM_SELECT,				// 選択
-		SOUND_LABEL_BGM_TUTORIAL,			// チュートリアル
-		SOUND_LABEL_BGM_GAME,				// ゲーム
-		SOUND_LABEL_BGM_RESULT,				// リザルト
+		SOUND_LABEL_BGM_TITLE = 0,		// タイトル
+		SOUND_LABEL_BGM_TUTORIAL,		// チュートリアル
+		SOUND_LABEL_BGM_GAME,			// ゲーム
+		SOUND_LABEL_BGM_RESULT,			// リザルト
 		/* ----- SE ----- */
-		SOUND_LABEL_SE_NEXT,				// 次へ
-		SOUND_LABEL_SE_SELECT,				// 選択
-		SOUND_LABEL_SE_DECISION,			// 決定
-		SOUND_LABEL_SE_ATTACKHIT,			// 攻撃が当たったとき
-		SOUND_LABEL_SE_DEADLYATTACKHIT,		// 必殺技が当たったとき
-		SOUND_LABEL_SE_FIRE,				// 発射
-		SOUND_LABEL_SE_CHARGE,				// チャージ
+		SOUND_LABEL_SE_ENTER,			// エンター
+		SOUND_LABEL_SE_THROW,			// 捨てる
+		SOUND_LABEL_SE_CUTIN,			// カットイン
+		SOUND_LABEL_SE_EXPLOSION1,		// 爆発1
+		SOUND_LABEL_SE_EXPLOSION2 ,		// 爆発2
 		/* ----- 最大数 ----- */
 		SOUND_LABEL_MAX,
 	} SOUND_LABEL;// サウンドラベル
