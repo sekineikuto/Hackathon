@@ -74,6 +74,7 @@ public:
 		NAME_PIEN_WIN,
 		NAME_ANGLEGAUGE,
 		NAME_POWERGAUGE,
+		NAME_DRAW,
 		NAME_MAX						// �ő吔
 	};
 	enum
