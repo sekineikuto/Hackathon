@@ -11,6 +11,7 @@
 #include "2DUI.h"
 
 #include "player.h"
+#include "Bomb.h"
 
 #include "renderer.h"
 #include "keyboard.h"
@@ -30,8 +31,8 @@
 // 静的メンバ変数の初期化
 //-------------------------------------------------------------------------------------------------------------
 CGame::PLAYEROFFSET CGame::m_offset[PLAYER_MAX] = {
-	{ D3DXVECTOR3(100.0f, 600.0f, 0.0f),D3DXVECTOR2(50.0f, 50.0f) },
-	{ D3DXVECTOR3(100.0f, 600.0f, 0.0f),D3DXVECTOR2(50.0f, 50.0f) },
+	{ D3DXVECTOR3(100.0f, 550.0f, 0.0f),D3DXVECTOR2(50.0f, 50.0f) },
+	{ D3DXVECTOR3(100.0f, 550.0f, 0.0f),D3DXVECTOR2(50.0f, 50.0f) },
 };
 
 //-------------------------------------------------------------------------------------------------------------
@@ -49,21 +50,10 @@ CGame * CGame::Create(void)
 //-------------------------------------------------------------------------------------------------------------
 void CGame::Init(void)
 {
-	//UI_BG = 0,
-	//	UI_TIMER,
-
-	//	UI_P1_BOMB,
-	//	UI_P2_BOMB,
-
-	//	UI_P1_GAGE_X,
-	//	UI_P1_GAGE_Y,
-	//	UI_P2_GAGE_X,
-	//	UI_P2_GAGE_Y,
 	C2DUi::SETING2DUI set[UI_MAX] =
 	{
 		C2DUi::SETING2DUI(0,CTexture::NAME_GAMEBG , true, D3DXVECTOR3(640.0f, 360.0f, 0.0f), MYLIB_D3DXCOR_SET, D3DXVECTOR2(640.0f, 360.0f),0.0f, 0),
 		C2DUi::SETING2DUI(C2DUi::MASK_FADE | C2DUi::MASK_NUMBER, 1, true, D3DXVECTOR3(620.0f, 70.0f, 0.0f), MYLIB_D3DXCOR_SET, D3DXVECTOR2(20.0f, 60.0f),0.0f, 90),
-
 
 		C2DUi::SETING2DUI(0,CTexture::NAME_GAMEBG, true, D3DXVECTOR3(52.0f,650.0f,0.0f), MYLIB_D3DXCOR_SET, D3DXVECTOR2(410.0f,40.0f),0.0f, 1000),
 		C2DUi::SETING2DUI(0,CTexture::NAME_GAMEBG, true, D3DXVECTOR3(100.0f,530.0f,0.0f), MYLIB_D3DXCOR_SET, D3DXVECTOR2(40.0f,465.0f),0.0f, 1000),
@@ -112,11 +102,12 @@ void CGame::Init(void)
 	pC2dui[UI_P2_GAGE_Y]->GetImage()->SetOriginType(ORIGINVERTEXTYPE_LOWERCENTER);
 	pC2dui[UI_P2_GAGE_Y]->GetImage()->UpdateVatexPosition();
 
-	//プレイヤーの最大ループ
-	//for (int nCntPlayer = 0; nCntPlayer < PLAYER_MAX; nCntPlayer++)
-	//{
-	//	m_pPlayer[nCntPlayer] = CPlayer::Create(m_offset[nCntPlayer].pos, m_offset[nCntPlayer].size);
-	//}
+	// プレイヤーの最大ループ
+	for (int nCntPlayer = 0; nCntPlayer < PLAYER_MAX; nCntPlayer++)
+	{
+		m_pPlayer[nCntPlayer] = CPlayer::Create(m_offset[nCntPlayer].pos, m_offset[nCntPlayer].size);
+		m_pBomb[nCntPlayer] = CBomb::Create(m_offset[nCntPlayer].pos, m_offset[nCntPlayer].size, nCntPlayer);
+	}
 
 	CMode::Init(STATE_NORMAL, 10);
 
@@ -126,6 +117,7 @@ void CGame::Init(void)
 		m_fGageScal[nCntaGage] = 0.0f;
 		GageScaForceShuffle(&m_fGageScaForce[nCntaGage]);
 		m_fGageScaSign[nCntaGage] = 1;
+		m_bMoveGage[nCntaGage] = true;
 	}
 }
 
@@ -189,6 +181,21 @@ void CGame::UpdateNormal(void)
 			}
 			// ゲージの更新
 			GageUpdate();
+
+			if (CManager::GetKeyboard().GetTrigger(DIK_RSHIFT))
+			{
+				m_bMoveGage[SCAL_P2_GAGE_X] = false;
+				m_bMoveGage[SCAL_P2_GAGE_Y] = false;
+				m_pBomb[PLAYER_2]->Fire(m_fGageScaForce[SCAL_P2_GAGE_X], m_fGageScaForce[SCAL_P2_GAGE_Y]);
+			}
+
+			if (CManager::GetKeyboard().GetTrigger(DIK_LSHIFT))
+			{
+				m_bMoveGage[SCAL_P1_GAGE_X] = false;
+				m_bMoveGage[SCAL_P1_GAGE_Y] = false;
+				m_pBomb[PLAYER_1]->Fire(m_fGageScaForce[SCAL_P1_GAGE_X], m_fGageScaForce[SCAL_P1_GAGE_Y]);
+			}
+
 			MLB_DEFAULT:break;
 	}
 }
@@ -212,26 +219,38 @@ void CGame::GageUpdate(void)
 {
 	for (int nCntaGage = 0; nCntaGage < SCAL_P2_GAGE_MAX; nCntaGage++)
 	{
-		m_fGageScal[nCntaGage] += m_fGageScaForce[nCntaGage] * m_fGageScaSign[nCntaGage];
-
-		if (GageScalClamp(&m_fGageScal[nCntaGage], &m_fGageScaSign[nCntaGage]))
+		if (m_bMoveGage[nCntaGage] == true)
 		{
-			GageScaForceShuffle(&m_fGageScaForce[nCntaGage]);
+			m_fGageScal[nCntaGage] += m_fGageScaForce[nCntaGage] * m_fGageScaSign[nCntaGage];
+
+			if (GageScalClamp(&m_fGageScal[nCntaGage], &m_fGageScaSign[nCntaGage]))
+			{
+				GageScaForceShuffle(&m_fGageScaForce[nCntaGage]);
+			}
 		}
 	}
 
+	if (m_bMoveGage[SCAL_P1_GAGE_X] == true)
+	{
+		pC2dui[UI_P1_GAGE_X]->GetImage()->SetSizeX(410.0f *m_fGageScal[0]);
+		pC2dui[UI_P1_GAGE_X]->GetImage()->UpdateVatexPosition();
+	}
+	if (m_bMoveGage[SCAL_P1_GAGE_Y] == true)
+	{
+		pC2dui[UI_P1_GAGE_Y]->GetImage()->SetSizeY(465.0f *m_fGageScal[1]);
+		pC2dui[UI_P1_GAGE_Y]->GetImage()->UpdateVatexPosition();
+	}
 
-	pC2dui[UI_P1_GAGE_X]->GetImage()->SetSizeX(410.0f *m_fGageScal[0]);
-	pC2dui[UI_P1_GAGE_X]->GetImage()->UpdateVatexPosition();
-
-	pC2dui[UI_P1_GAGE_Y]->GetImage()->SetSizeY(465.0f *m_fGageScal[1]);
-	pC2dui[UI_P1_GAGE_Y]->GetImage()->UpdateVatexPosition();
-
-	pC2dui[UI_P2_GAGE_X]->GetImage()->SetSizeX(410.0f *m_fGageScal[2]);
-	pC2dui[UI_P2_GAGE_X]->GetImage()->UpdateVatexPosition();
-
-	pC2dui[UI_P2_GAGE_Y]->GetImage()->SetSizeY(465.0f *m_fGageScal[3]);
-	pC2dui[UI_P2_GAGE_Y]->GetImage()->UpdateVatexPosition();
+	if (m_bMoveGage[SCAL_P2_GAGE_X] == true)
+	{
+		pC2dui[UI_P2_GAGE_X]->GetImage()->SetSizeX(410.0f *m_fGageScal[2]);
+		pC2dui[UI_P2_GAGE_X]->GetImage()->UpdateVatexPosition();
+	}
+	if (m_bMoveGage[SCAL_P2_GAGE_Y] == true)
+	{
+		pC2dui[UI_P2_GAGE_Y]->GetImage()->SetSizeY(465.0f *m_fGageScal[3]);
+		pC2dui[UI_P2_GAGE_Y]->GetImage()->UpdateVatexPosition();
+	}
 }
 
 //-------------------------------------------------------------------------------------------------------------
