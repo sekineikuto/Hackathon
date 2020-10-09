@@ -19,17 +19,18 @@
 //-------------------------------------------------------------------------------------------------------------
 // マクロ定義
 //-------------------------------------------------------------------------------------------------------------
+#define SIZE_SCORE	(D3DXVECTOR2(40.0f, 80.0f))	// スコアのサイズ
 
 //-------------------------------------------------------------------------------------------------------------
 // 静的メンバ変数の初期化
 //-------------------------------------------------------------------------------------------------------------
 D3DXVECTOR3 CRanking::m_scorePos[MAX_NUMRANK] =
 {
-	D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT/ 2, 0.0f),
-	D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0f),
-	D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0f),
-	D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0f),
-	D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0f)
+	D3DXVECTOR3(SCREEN_WIDTH / 2, 100.0f, 0.0f),
+	D3DXVECTOR3(SCREEN_WIDTH / 2, 200.0f, 0.0f),
+	D3DXVECTOR3(SCREEN_WIDTH / 2, 300.0f, 0.0f),
+	D3DXVECTOR3(SCREEN_WIDTH / 2, 400.0f, 0.0f),
+	D3DXVECTOR3(SCREEN_WIDTH / 2, 500.0f, 0.0f)
 };
 
 //-------------------------------------------------------------------------------------------------------------
@@ -50,7 +51,10 @@ CRanking * CRanking::Create(void)
 //-------------------------------------------------------------------------------------------------------------
 void CRanking::Init(void)
 {
-	m_pScore = CScore::Create(m_scorePos[0], D3DXVECTOR2(100.0f, 50.0f), CScore::GetDefaultScore(0));
+	for (int nCntScore = 0; nCntScore < MAX_NUMRANK; nCntScore++)
+	{
+		m_pScore[nCntScore] = CScore::Create(m_scorePos[nCntScore], SIZE_SCORE, CScore::GetDefaultScore(nCntScore));
+	}
 }
 
 //-------------------------------------------------------------------------------------------------------------
@@ -58,11 +62,14 @@ void CRanking::Init(void)
 //-------------------------------------------------------------------------------------------------------------
 void CRanking::Uninit(void)
 {
-	if (m_pScore)
+	for (int nCntScore = 0; nCntScore < MAX_NUMRANK; nCntScore++)
 	{
-		m_pScore->Uninit();
-		delete m_pScore;
-		m_pScore = nullptr;
+		if (m_pScore[nCntScore])
+		{
+			m_pScore[nCntScore]->Uninit();
+			delete m_pScore[nCntScore];
+			m_pScore[nCntScore] = nullptr;
+		}
 	}
 }
 
@@ -71,8 +78,11 @@ void CRanking::Uninit(void)
 //-------------------------------------------------------------------------------------------------------------
 void CRanking::Update(void)
 {
-	if (m_pScore)
-		m_pScore->Update();
+	for (int nCntScore = 0; nCntScore < MAX_NUMRANK; nCntScore++)
+	{
+		if (m_pScore[nCntScore])
+			m_pScore[nCntScore]->Update();
+	}
 
 	// キー入力でタイトルへ
 	if (CManager::GetKeyboard().GetTrigger(DIK_RETURN))
@@ -84,6 +94,9 @@ void CRanking::Update(void)
 //-------------------------------------------------------------------------------------------------------------
 void CRanking::Draw(void)
 {
-	if (m_pScore)
-		m_pScore->Draw();
+	for (int nCntScore = 0; nCntScore < MAX_NUMRANK; nCntScore++)
+	{
+		if (m_pScore[nCntScore])
+			m_pScore[nCntScore]->Draw();
+	}
 }

@@ -36,6 +36,8 @@ public:
 
 	void BindTexture(LPDIRECT3DTEXTURE9 pTexture);				// テクスチャを関連付ける
 
+	int GetDigit(void) { return m_nDigits; }		// 桁数の取得
+
 	int							m_nValue;			// 値
 	int							m_nDigits;			// 桁数(描画数)
 	int							m_nNumNumber;		// 使う個数
