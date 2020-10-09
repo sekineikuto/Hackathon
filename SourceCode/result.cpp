@@ -96,10 +96,15 @@ void CResult::Init(void)
 	// プレイヤーの数だけスコア生成
 	for (int nCntPlayer = 0; nCntPlayer < MAX_PLAYER; nCntPlayer++)
 	{
+		// フラッシュの設定
+		bool bFlash = false;
+		if (m_nWinPlayer == nCntPlayer + 1)
+			bFlash = true;
+
 		// スコア
 		m_pScore[nCntPlayer] = CScore::Create(m_posScore[nCntPlayer], 
 								m_sizeScore[nCntPlayer], 
-								CScore::GetPlayerScore(nCntPlayer));
+								CScore::GetPlayerScore(nCntPlayer), bFlash);
 		// 単位
 		set.nTextureID = CTexture::NAME_PIENDISTANCE;
 		set.pos = D3DXVECTOR3(m_posScore[nCntPlayer].x + DIFWIDTH_PIENDISTANCE, m_posScore[nCntPlayer].y + DIFHEIGHT_PIENDISTANCE, m_posScore[nCntPlayer].z);
@@ -124,6 +129,8 @@ void CResult::Init(void)
 		set.size = SIZE_TEXT_JUDGE;
 		pPienIcon[nCntPlayer] = C2DUi::Create(set);
 	}
+
+	CScore::SaveScore();
 }
 
 //-------------------------------------------------------------------------------------------------------------
