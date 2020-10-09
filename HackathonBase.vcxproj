@@ -156,6 +156,7 @@
     <ClCompile Include="SourceCode\2Deffect.cpp" />
     <ClCompile Include="SourceCode\2DUI.cpp" />
     <ClCompile Include="SourceCode\3Dparticle.cpp" />
+    <ClCompile Include="SourceCode\Bomb.cpp" />
     <ClCompile Include="SourceCode\Calculation.cpp" />
     <ClCompile Include="SourceCode\camera.cpp" />
     <ClCompile Include="SourceCode\DebugProc.cpp" />
@@ -191,6 +192,7 @@
     <ClInclude Include="SourceCode\2Deffect.h" />
     <ClInclude Include="SourceCode\2DUI.h" />
     <ClInclude Include="SourceCode\3Dparticle.h" />
+    <ClInclude Include="SourceCode\Bomb.h" />
     <ClInclude Include="SourceCode\Calculation.h" />
     <ClInclude Include="SourceCode\camera.h" />
     <ClInclude Include="SourceCode\DebugProc.h" />

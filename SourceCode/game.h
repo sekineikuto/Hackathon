@@ -87,6 +87,7 @@ private:
 	float m_fGageScal[SCAL_P2_GAGE_MAX];
 	float m_fGageScaForce[SCAL_P2_GAGE_MAX];
 	int m_fGageScaSign[SCAL_P2_GAGE_MAX];
+	bool m_bMoveGage[SCAL_P2_GAGE_MAX];
 };
 
 #endif
