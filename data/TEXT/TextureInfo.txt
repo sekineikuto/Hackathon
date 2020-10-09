@@ -2,12 +2,17 @@
 # テクスチャファイル情報
 #---------------------------------------------
 [TEXTURE][NUMBER]
-NUMBER = 5
+NUMBER = 9
 
 [TEXTURE][FILENAME]
 FILENAME = DATA\TEXTURE\UI\Frame000.png
 FILENAME = DATA\TEXTURE\UI\number000.png
 FILENAME = DATA\TEXTURE\UI\PleasePressButton000.png
+FILENAME = DATA\TEXTURE\UI\AngleGauge_1P.png
+FILENAME = DATA\TEXTURE\UI\PowerGauge_1P.png
+FILENAME = DATA\TEXTURE\UI\AngleGauge_2P.png
+FILENAME = DATA\TEXTURE\UI\PowerGauge_2P.png
+
 
 FILENAME = DATA\TEXTURE\BG\GameBG.jpg
 
