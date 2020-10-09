@@ -16,6 +16,7 @@
 #include "2Deffect.h"
 #include "ui.h"
 #include "Scene2D.h"
+#include "sound.h"
 
 //-------------------------------------------------------------------------------------------------------------
 // マクロ定義
@@ -162,9 +163,12 @@ void CTitle::Update(void)
 	}
 	if (CManager::GetKeyboard().GetTrigger(DIK_RETURN))
 	{
-		this->SetState(STATE_OUT);
-		// SEを入れる
-
+		if (CManager::GetRenderer().GetFade()->GetFadeState() == CFade::FADE_NONE)
+		{
+			this->SetState(STATE_OUT);
+			// SEを入れる
+			CManager::GetSound().PlaySound(CSound::SOUND_LABEL_SE_ENTER);
+		}
 	}
 #ifdef _DEBUG
 	// テストパーティクル

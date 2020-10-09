@@ -13,6 +13,7 @@
 #include "renderer.h"
 #include "fade.h"
 #include "ui.h"
+#include "sound.h"
 
 //-------------------------------------------------------------------------------------------------------------
 // ¶¬
@@ -98,7 +99,7 @@ void CTutorial::Update(void)
 	{
 		this->SetState(STATE_OUT);
 		// SE‚ð“ü‚ê‚é
-
+		CManager::GetSound().PlaySound(CSound::SOUND_LABEL_SE_ENTER);
 	}
 }
 

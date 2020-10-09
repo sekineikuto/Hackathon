@@ -81,6 +81,7 @@ public:
 		NAME_4TH,
 		NAME_5TH,
 		NAME_RANKING,
+		NAME_GAMEBG000,
 		NAME_MAX						// �ő吔
 	};
 	enum

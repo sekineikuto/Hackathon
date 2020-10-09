@@ -1,0 +1,8 @@
+CManager::GetSound().PlaySound(CSound::SOUND_LABEL_BGM_TITLEANDRESULT);
+CManager::GetSound().PlaySound(CSound::SOUND_LABEL_BGM_TUTOANDGAME);
+CManager::GetSound().PlaySound(CSound::SOUND_LABEL_BGM_CUTINDYUERU);
+
+CManager::GetSound().PlaySound(CSound::SOUND_LABEL_SE_ENTER);
+CManager::GetSound().PlaySound(CSound::SOUND_LABEL_SE_THROW);
+CManager::GetSound().PlaySound(CSound::SOUND_LABEL_SE_CUTIN);
+CManager::GetSound().PlaySound(CSound::SOUND_LABEL_SE_EXPLOSION1);
