@@ -62,6 +62,8 @@ public:
 		NAME_PB01,
 		NAME_PY00,
 		NAME_PY01,
+		NAME_TITLEBG000,
+		NAME_PIENDISTANCE,
 		NAME_MAX						// �ő吔
 	};
 	enum

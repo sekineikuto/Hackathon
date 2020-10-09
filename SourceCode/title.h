@@ -27,7 +27,8 @@ public:
 	// タイトルUI
 	typedef enum
 	{
-		TITLEUI_NAME = 0,		// 名前
+		TITLEUI_BG = 0,			// 背景
+		TITLEUI_NAME,			// 名前
 		TITLEUI_PRESSENTERNAME,	// プレスエンター名
 		TITLEUI_PRESSENTERICON,	// プレスエンターアイコン
 		TITLEUI_MAX
