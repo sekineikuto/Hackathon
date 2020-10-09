@@ -153,6 +153,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="score.cpp" />
     <ClCompile Include="SourceCode\2Deffect.cpp" />
     <ClCompile Include="SourceCode\2DUI.cpp" />
     <ClCompile Include="SourceCode\3Dparticle.cpp" />
@@ -189,6 +190,7 @@
     <ClCompile Include="SourceCode\ui.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="score.h" />
     <ClInclude Include="SourceCode\2Deffect.h" />
     <ClInclude Include="SourceCode\2DUI.h" />
     <ClInclude Include="SourceCode\3Dparticle.h" />
