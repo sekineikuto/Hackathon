@@ -1,1 +1,1 @@
-data/LOAD/UI/GameUi.txt
+data/LOAD/UI/TitleUi.txt

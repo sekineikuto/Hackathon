@@ -9,6 +9,7 @@
 //-------------------------------------------------------------------------------------------------------------
 #include "texture.h"
 #include "renderer.h"
+#include <string>
 
 //-------------------------------------------------------------------------------------------------------------
 // 静的メンバ変数の初期化
@@ -91,7 +92,8 @@ void CTexture::CreateTexture(void)
 		if (D3DXCreateTextureFromFile(pDevice, SetingStr, &SetingText) != D3D_OK)
 		{
 #ifdef _DEBUG
-			MessageBox(NULL, "テクスチャの生成に失敗しました", "警告！", MB_ICONWARNING);
+			std::string str = "テクスチャの生成に失敗しました[" + std::to_string(nCntTexture) + "]";
+			MessageBox(NULL, str.c_str(), "警告！", MB_ICONWARNING);
 #endif
 		}
 		// 要素の挿入
