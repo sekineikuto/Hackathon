@@ -56,7 +56,7 @@ void CBomb::Update(void)
 	switch (m_State)
 	{
 		MLB_CASE(STATE_STANDBY)UpdateStandby();
-		MLB_CASE(STATE_MOVEING)UpdateMoveing();
+		//MLB_CASE(STATE_MOVEING)UpdateMoveing();
 		MLB_CASE(STATE_LANDING)UpdateLanding();
 	default:
 		break;
@@ -80,21 +80,24 @@ void CBomb::UpdateStandby(void)
 
 void CBomb::UpdateMoveing(void)
 {
-	// ˆÊ’u‚ÌŽæ“¾
-	D3DXVECTOR3 *pos = 	m_pScene2D->GetPosition();
-
-	*pos += m_move;
-	m_move.y += 0.5f;
-
-	if (pos->y >= 600.0f)
+	if (m_State == STATE_MOVEING)
 	{
-		pos->y = 600.0f;
-		m_State = STATE_LANDING;
+		// ˆÊ’u‚ÌŽæ“¾
+		D3DXVECTOR3 *pos = m_pScene2D->GetPosition();
 
-		m_fDistance = abs(pos->x - m_StartPos.x);
+		*pos += m_move;
+		m_move.y += 0.5f;
+
+		if (pos->y >= 600.0f)
+		{
+			pos->y = 600.0f;
+			m_State = STATE_LANDING;
+
+			m_fDistance = abs(pos->x - m_StartPos.x);
+		}
+		m_pScene2D->UpdateVatexPosition();
 	}
 
-	m_pScene2D->UpdateVatexPosition();
 }
 
 void CBomb::UpdateLanding(void)
@@ -139,6 +142,7 @@ void CBomb::Fire(float & fForce, float & fForceY, D3DXVECTOR3 &pos)
 	// ˆÊ’u‚ÌŽæ“¾
 	*m_pScene2D->GetPosition() = pos;
 	m_StartPos = *m_pScene2D->GetPosition();
+	m_pScene2D->UpdateVatexPosition();
 	m_State = STATE_MOVEING;
 }
 

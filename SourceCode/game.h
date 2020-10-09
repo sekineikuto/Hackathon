@@ -60,6 +60,7 @@ public:
 		PLAYER_MAX,
 	};
 
+
 	typedef enum
 	{
 		WINSTATE_1P2P,
@@ -141,6 +142,11 @@ private:
 
 	CATIN m_Catin[PLAYER_MAX];
 	
+
+
+	static float m_fAlphaValue[2];
+	bool m_bDuelist;
+	int m_nCntDuelist;
 };
 
 #endif
