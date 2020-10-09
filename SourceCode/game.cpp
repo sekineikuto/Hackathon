@@ -212,11 +212,12 @@ void CGame::GageUpdate(void)
 {
 	for (int nCntaGage = 0; nCntaGage < SCAL_P2_GAGE_MAX; nCntaGage++)
 	{
+		m_fGageScal[nCntaGage] += m_fGageScaForce[nCntaGage] * m_fGageScaSign[nCntaGage];
+
 		if (GageScalClamp(&m_fGageScal[nCntaGage], &m_fGageScaSign[nCntaGage]))
 		{
 			GageScaForceShuffle(&m_fGageScaForce[nCntaGage]);
 		}
-		m_fGageScal[nCntaGage] += m_fGageScaForce[nCntaGage] * m_fGageScaSign[nCntaGage];
 	}
 
 
@@ -238,7 +239,7 @@ void CGame::GageUpdate(void)
 //-------------------------------------------------------------------------------------------------------------
 void CGame::GageScaForceShuffle(float * pGageScalForce)
 {
-	*pGageScalForce = (rand() % 10) * 0.01f;
+	*pGageScalForce = (rand() % 5) * 0.02f;
 }
 
 bool CGame::GageScalClamp(float * pGageScal, int *pSign)
