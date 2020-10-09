@@ -212,6 +212,9 @@ void CGame::UpdateNormal(void)
 				m_PlaerDist.fPlayer1Dist = 0.0f;
 				m_PlaerDist.fPlayer2Dist = 0.0f;
 
+				CScore::SetPlayerScore(PLAYER_1, 0.0f);
+				CScore::SetPlayerScore(PLAYER_2, 0.0f);
+
 			}
 			else if (pC2dui[UI_TIMER]->GetNumericString()->m_nValue <= 5) {
 				pC2dui[UI_TIMER]->GetFade()->Update(pC2dui[UI_TIMER]->GetNumericString());
@@ -219,35 +222,38 @@ void CGame::UpdateNormal(void)
 			// ゲージの更新
 			GageUpdate();
 
-			if (CManager::GetKeyboard().GetTrigger(DIK_RSHIFT))
-			{
-				m_bMoveGage[SCAL_P2_GAGE_X] = false;
-				m_bMoveGage[SCAL_P2_GAGE_Y] = false;
-				m_pBomb[PLAYER_2]->Fire(m_fGageScal[SCAL_P2_GAGE_X], m_fGageScal[SCAL_P2_GAGE_Y],m_Bomoffset[PLAYER_2].fire);
-
-				pC2dui[UI_CUTIN_P2]->SetDisp(true);
-				m_pPlayer[PLAYER_2]->GetScene2D()->BindTexture(CTexture::GetTextureInfo(CTexture::NAME_PB01));
-
-				if (m_fGageScal[SCAL_P2_GAGE_X] >= 0.75f &&
-					m_fGageScal[SCAL_P2_GAGE_Y] >= 0.75f)
-				{
-					m_Catin[PLAYER_2].bCatin = true;
-				}
-			}
 			if (CManager::GetKeyboard().GetTrigger(DIK_LSHIFT))
 			{
 				m_bMoveGage[SCAL_P1_GAGE_X] = false;
 				m_bMoveGage[SCAL_P1_GAGE_Y] = false;
 				m_pBomb[PLAYER_1]->Fire(m_fGageScal[SCAL_P1_GAGE_X], m_fGageScal[SCAL_P1_GAGE_Y], m_Bomoffset[PLAYER_1].fire);
 
+
 				m_pPlayer[PLAYER_1]->GetScene2D()->BindTexture(CTexture::GetTextureInfo(CTexture::NAME_PY01));
-				pC2dui[UI_CUTIN_P1]->SetDisp(true);
 				if (m_fGageScal[SCAL_P1_GAGE_X] >= 0.75f &&
 					m_fGageScal[SCAL_P1_GAGE_Y] >= 0.75f)
 				{
+					pC2dui[UI_CUTIN_P1]->SetDisp(true);
 					m_Catin[PLAYER_1].bCatin = true;
 				}
 			}
+
+			if (CManager::GetKeyboard().GetTrigger(DIK_RSHIFT))
+			{
+				m_bMoveGage[SCAL_P2_GAGE_X] = false;
+				m_bMoveGage[SCAL_P2_GAGE_Y] = false;
+				m_pBomb[PLAYER_2]->Fire(m_fGageScal[SCAL_P2_GAGE_X], m_fGageScal[SCAL_P2_GAGE_Y],m_Bomoffset[PLAYER_2].fire);
+
+				m_pPlayer[PLAYER_2]->GetScene2D()->BindTexture(CTexture::GetTextureInfo(CTexture::NAME_PB01));
+
+				if (m_fGageScal[SCAL_P2_GAGE_X] >= 0.75f &&
+					m_fGageScal[SCAL_P2_GAGE_Y] >= 0.75f)
+				{
+					pC2dui[UI_CUTIN_P2]->SetDisp(true);
+					m_Catin[PLAYER_2].bCatin = true;
+				}
+			}
+
 
 			if (m_pBomb[PLAYER_1]->GetState() ==CBomb::STATE_LANDING &&
 				m_pBomb[PLAYER_2]->GetState() == CBomb::STATE_LANDING)
@@ -339,43 +345,43 @@ void CGame::GageUpdate(void)
 
 	if (m_bMoveGage[SCAL_P1_GAGE_X] == true)
 	{
-		pC2dui[UI_P1_GAGE_X]->GetImage()->SetSizeX(410.0f *m_fGageScal[0]);
+		pC2dui[UI_P1_GAGE_X]->GetImage()->SetSizeX(410.0f *m_fGageScal[SCAL_P1_GAGE_X]);
 		pC2dui[UI_P1_GAGE_X]->GetImage()->UpdateVatexPosition();
 		D3DXCOLOR *col = pC2dui[UI_P1_GAGE_X]->GetImage()->GetColor();
-		col->b = 1.0f - m_fGageScal[0];
-		col->g = 1.0f - m_fGageScal[0];
+		col->b = 1.0f - m_fGageScal[SCAL_P1_GAGE_X];
+		col->g = 1.0f - m_fGageScal[SCAL_P1_GAGE_X];
 		pC2dui[UI_P1_GAGE_X]->GetImage()->UpdateVatexColor();
 
 	}
 	if (m_bMoveGage[SCAL_P1_GAGE_Y] == true)
 	{
-		pC2dui[UI_P1_GAGE_Y]->GetImage()->SetSizeY(465.0f *m_fGageScal[1]);
+		pC2dui[UI_P1_GAGE_Y]->GetImage()->SetSizeY(465.0f *m_fGageScal[SCAL_P1_GAGE_Y]);
 		pC2dui[UI_P1_GAGE_Y]->GetImage()->UpdateVatexPosition();
 
 		D3DXCOLOR *col = pC2dui[UI_P1_GAGE_Y]->GetImage()->GetColor();
-		col->b = 1.0f - m_fGageScal[0];
-		col->g = 1.0f - m_fGageScal[0];
+		col->b = 1.0f - m_fGageScal[SCAL_P1_GAGE_Y];
+		col->g = 1.0f - m_fGageScal[SCAL_P1_GAGE_Y];
 		pC2dui[UI_P1_GAGE_Y]->GetImage()->UpdateVatexColor();
 	}
 
 	if (m_bMoveGage[SCAL_P2_GAGE_X] == true)
 	{
-		pC2dui[UI_P2_GAGE_X]->GetImage()->SetSizeX(410.0f *m_fGageScal[2]);
+		pC2dui[UI_P2_GAGE_X]->GetImage()->SetSizeX(410.0f *m_fGageScal[SCAL_P2_GAGE_X]);
 		pC2dui[UI_P2_GAGE_X]->GetImage()->UpdateVatexPosition();
 
 		D3DXCOLOR *col = pC2dui[UI_P2_GAGE_X]->GetImage()->GetColor();
-		col->b = 1.0f - m_fGageScal[0];
-		col->g = 1.0f - m_fGageScal[0];
+		col->b = 1.0f - m_fGageScal[SCAL_P2_GAGE_X];
+		col->g = 1.0f - m_fGageScal[SCAL_P2_GAGE_X];
 		pC2dui[UI_P2_GAGE_X]->GetImage()->UpdateVatexColor();
 	}
 	if (m_bMoveGage[SCAL_P2_GAGE_Y] == true)
 	{
-		pC2dui[UI_P2_GAGE_Y]->GetImage()->SetSizeY(465.0f *m_fGageScal[3]);
+		pC2dui[UI_P2_GAGE_Y]->GetImage()->SetSizeY(465.0f *m_fGageScal[SCAL_P2_GAGE_Y]);
 		pC2dui[UI_P2_GAGE_Y]->GetImage()->UpdateVatexPosition();
 
 		D3DXCOLOR *col = pC2dui[UI_P2_GAGE_Y]->GetImage()->GetColor();
-		col->b = 1.0f - m_fGageScal[0];
-		col->g = 1.0f - m_fGageScal[0];
+		col->b = 1.0f - m_fGageScal[SCAL_P2_GAGE_Y];
+		col->g = 1.0f - m_fGageScal[SCAL_P2_GAGE_Y];
 		pC2dui[UI_P2_GAGE_Y]->GetImage()->UpdateVatexColor();
 	}
 }
