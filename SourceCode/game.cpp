@@ -27,17 +27,20 @@
 //-------------------------------------------------------------------------------------------------------------
 #define GAME_GAGE_MAX			150.0f
 #define GAME_EXPOSURE_RANGE		277.0f
+#define GAME_TIME				15
 
 //-------------------------------------------------------------------------------------------------------------
 // 静的メンバ変数の初期化
 //-------------------------------------------------------------------------------------------------------------
 CGame::PLAYEROFFSET CGame::m_offset[PLAYER_MAX] = {
-	{ D3DXVECTOR3(100.0f, 550.0f, 0.0f),D3DXVECTOR2(50.0f, 50.0f) },
-	{ D3DXVECTOR3(1180.0f, 550.0f, 0.0f),D3DXVECTOR2(50.0f, 50.0f) },
+	{ D3DXVECTOR3(200.0f, 550.0f, 0.0f),D3DXVECTOR2(50.0f, 50.0f) },
+	{ D3DXVECTOR3(1080.0f, 550.0f, 0.0f),D3DXVECTOR2(50.0f, 50.0f) },
 };
 
 CGame::GAMEWINSTATE CGame::m_GameWinState = WINSTATE_NONE;
 CGame::PLAYERPIEN   CGame::m_PlayerPien;
+CGame::PLAYERDIST	CGame::m_PlaerDist;
+
 
 //-------------------------------------------------------------------------------------------------------------
 // 生成
@@ -57,7 +60,7 @@ void CGame::Init(void)
 	C2DUi::SETING2DUI set[UI_MAX] =
 	{
 		C2DUi::SETING2DUI(0,CTexture::NAME_GAMEBG , true, D3DXVECTOR3(640.0f, 360.0f, 0.0f), MYLIB_D3DXCOR_SET, D3DXVECTOR2(640.0f, 360.0f),0.0f, 0),
-		C2DUi::SETING2DUI(C2DUi::MASK_FADE | C2DUi::MASK_NUMBER, 1, true, D3DXVECTOR3(620.0f, 70.0f, 0.0f), MYLIB_D3DXCOR_SET, D3DXVECTOR2(20.0f, 60.0f),0.0f, 90),
+		C2DUi::SETING2DUI(C2DUi::MASK_FADE | C2DUi::MASK_NUMBER,CTexture::NAME_NUMBER, true, D3DXVECTOR3(620.0f, 70.0f, 0.0f), MYLIB_D3DXCOR_SET, D3DXVECTOR2(20.0f, 60.0f),0.0f, GAME_TIME),
 
 		C2DUi::SETING2DUI(0,CTexture::NAME_GAMEBG, true, D3DXVECTOR3(52.0f,650.0f,0.0f), MYLIB_D3DXCOR_SET, D3DXVECTOR2(410.0f,40.0f),0.0f, 1000),
 		C2DUi::SETING2DUI(0,CTexture::NAME_GAMEBG, true, D3DXVECTOR3(100.0f,530.0f,0.0f), MYLIB_D3DXCOR_SET, D3DXVECTOR2(40.0f,465.0f),0.0f, 1000),
@@ -68,6 +71,9 @@ void CGame::Init(void)
 		C2DUi::SETING2DUI(0,CTexture::NAME_ANGLEGAUGE_1P, true, D3DXVECTOR3(100.0f,300.0f,0.0f), MYLIB_D3DXCOR_SET, D3DXVECTOR2(60.0f,280.0f),0.0f, 0),
 		C2DUi::SETING2DUI(0,CTexture::NAME_POWERGAUGE_2P, true, D3DXVECTOR3(950.0f,650.0f,0.0f), MYLIB_D3DXCOR_SET, D3DXVECTOR2(300.0f,60.0f),0.0f, 0),
 		C2DUi::SETING2DUI(0,CTexture::NAME_ANGLEGAUGE_2P, true, D3DXVECTOR3(1180.0f,300.0f,0.0f), MYLIB_D3DXCOR_SET, D3DXVECTOR2(60.0f,280.0f),0.0f, 0),
+
+		C2DUi::SETING2DUI(0,CTexture::NAME_GAMEBG, false, D3DXVECTOR3(300.0f,360.0f,0.0f), MYLIB_D3DXCOR_SET, D3DXVECTOR2(0.0f,0.0f),0.0f, 0),
+		C2DUi::SETING2DUI(0,CTexture::NAME_GAMEBG, false, D3DXVECTOR3(980.0f,360.0f,0.0f), MYLIB_D3DXCOR_SET, D3DXVECTOR2(0.0f,0.0f),0.0f, 0),
 	};
 	
 	CScene::PRIORITY pri[UI_MAX] = {
@@ -77,10 +83,12 @@ void CGame::Init(void)
 		CScene::PRIORITY_2DUI,
 		CScene::PRIORITY_2DUI,
 		CScene::PRIORITY_2DUI,
-		CScene::PRIORITY_BG,
-		CScene::PRIORITY_BG,
-		CScene::PRIORITY_BG,
-		CScene::PRIORITY_BG,
+		CScene::PRIORITY_2DUI,
+		CScene::PRIORITY_2DUI,
+		CScene::PRIORITY_2DUI,
+		CScene::PRIORITY_2DUI,
+		CScene::PRIORITY_2DUI,
+		CScene::PRIORITY_2DUI,
 	};
 	for (int nCntUI = 0; nCntUI < UI_MAX; nCntUI++)
 	{
@@ -111,6 +119,10 @@ void CGame::Init(void)
 	{
 		m_pPlayer[nCntPlayer] = CPlayer::Create(m_offset[nCntPlayer].pos, m_offset[nCntPlayer].size);
 		m_pBomb[nCntPlayer] = CBomb::Create(m_offset[nCntPlayer].pos, m_offset[nCntPlayer].size, nCntPlayer);
+
+		m_Catin[nCntPlayer].bCatin = false;
+		m_Catin[nCntPlayer].nCntCaatin = 0;
+
 	}
 
 	CMode::Init(STATE_NORMAL, 30);
@@ -167,6 +179,7 @@ void CGame::UpdateNormal(void)
 	switch (CManager::GetRenderer().GetFade()->GetFadeState())
 	{
 		MLB_CASE(CFade::FADE_NONE)
+			CatinProc();
 			if (m_nCntState == 60) {
 				pC2dui[UI_TIMER]->GetNumericString()->AddValue();
 				pC2dui[UI_TIMER]->GetNumericString()->Update();
@@ -176,10 +189,19 @@ void CGame::UpdateNormal(void)
 				m_nCntState++;
 			}
 			if (pC2dui[UI_TIMER]->GetNumericString()->m_nValue < 0) {
+				pC2dui[UI_TIMER]->GetNumericString()->m_nValue = 0;
 				this->SetState(STATE_OUT);
 				m_nCntState = 0;
+
+				m_GameWinState = WINSTATE_1P2P;
+				m_PlayerPien.bPlayer1Pien = true;
+				m_PlayerPien.bPlayer2Pien = true;
+
+				m_PlaerDist.fPlayer1Dist = 0.0f;
+				m_PlaerDist.fPlayer2Dist = 0.0f;
+
 			}
-			else if (pC2dui[UI_TIMER]->GetNumericString()->m_nValue <= 10) {
+			else if (pC2dui[UI_TIMER]->GetNumericString()->m_nValue <= 5) {
 				pC2dui[UI_TIMER]->GetFade()->Update(pC2dui[UI_TIMER]->GetNumericString());
 			}
 			// ゲージの更新
@@ -190,13 +212,18 @@ void CGame::UpdateNormal(void)
 				m_bMoveGage[SCAL_P2_GAGE_X] = false;
 				m_bMoveGage[SCAL_P2_GAGE_Y] = false;
 				m_pBomb[PLAYER_2]->Fire(m_fGageScal[SCAL_P2_GAGE_X], m_fGageScal[SCAL_P2_GAGE_Y]);
-			}
 
+				pC2dui[UI_CUTIN_P2]->SetDisp(true);
+				m_Catin[PLAYER_2].bCatin = true;
+			}
 			if (CManager::GetKeyboard().GetTrigger(DIK_LSHIFT))
 			{
 				m_bMoveGage[SCAL_P1_GAGE_X] = false;
 				m_bMoveGage[SCAL_P1_GAGE_Y] = false;
 				m_pBomb[PLAYER_1]->Fire(m_fGageScal[SCAL_P1_GAGE_X], m_fGageScal[SCAL_P1_GAGE_Y]);
+
+				pC2dui[UI_CUTIN_P1]->SetDisp(true);
+				m_Catin[PLAYER_1].bCatin = true;
 			}
 
 			if (m_pBomb[PLAYER_1]->GetState() ==CBomb::STATE_LANDING &&
@@ -204,6 +231,9 @@ void CGame::UpdateNormal(void)
 			{
 				float fDistance1 =  m_pBomb[PLAYER_1]->GetDistance();
 				float fDistance2 =  m_pBomb[PLAYER_2]->GetDistance();
+
+				m_PlaerDist.fPlayer1Dist = fDistance1;
+				m_PlaerDist.fPlayer2Dist = fDistance2;
 
 				if (fDistance1 == fDistance2)
 				{
@@ -220,17 +250,22 @@ void CGame::UpdateNormal(void)
 
 				// プレイヤー1とプレエイヤー2の爆弾の距離
 				float fDistanceP1_B2 = m_pPlayer[PLAYER_1]->GetPos().x - m_pBomb[PLAYER_2]->GetPos().x;
-				m_pPlayer[PLAYER_1]->SetState((abs(fDistanceP1_B2) >= GAME_EXPOSURE_RANGE) ? CPlayer::STATE_NOTEXPOSURE : CPlayer::STATE_EXPOSURE);
+				bool bExprosureP1 = (abs(fDistanceP1_B2) >= GAME_EXPOSURE_RANGE);
+				m_pPlayer[PLAYER_1]->SetState(bExprosureP1 ? CPlayer::STATE_NOTEXPOSURE : CPlayer::STATE_EXPOSURE);
 
 				// プレイヤー2とプレエイヤー1の爆弾の距離
 				float fDistanceP2_B1 = m_pPlayer[PLAYER_2]->GetPos().x - m_pBomb[PLAYER_1]->GetPos().x;
-				m_pPlayer[PLAYER_2]->SetState((abs(fDistanceP2_B1) >= GAME_EXPOSURE_RANGE) ? CPlayer::STATE_NOTEXPOSURE : CPlayer::STATE_EXPOSURE);
+				bool bExprosureP2 = (abs(fDistanceP2_B1) >= GAME_EXPOSURE_RANGE);
+				m_pPlayer[PLAYER_2]->SetState((bExprosureP2) ? CPlayer::STATE_NOTEXPOSURE : CPlayer::STATE_EXPOSURE);
 
 				cout << "とんだ距離1 == " << fDistance1 << "\n";
 				cout << "とんだ距離2 == " << fDistance2 << "\n";
 
 				cout << "ピエン == " << fDistanceP1_B2 << "\n";
 				cout << "ピエン == " << fDistanceP2_B1 << "\n";
+
+				m_PlayerPien.bPlayer1Pien = bExprosureP1;
+				m_PlayerPien.bPlayer2Pien = bExprosureP2;
 
 				this->SetState(STATE_OUT);
 				m_nCntState = 0;
@@ -245,6 +280,9 @@ void CGame::UpdateNormal(void)
 //-------------------------------------------------------------------------------------------------------------
 void CGame::UpdateOut(void)
 {
+	m_pBomb[PLAYER_1]->Expansion();
+	m_pBomb[PLAYER_2]->Expansion();
+
 	if (this->m_nCntState == this->m_nMaxCntState)
 	{
 		CManager::GetRenderer().GetFade()->SetFade(CManager::MODE_RESULT);
@@ -319,4 +357,34 @@ bool CGame::GageScalClamp(float * pGageScal, int *pSign)
 
 	return false;
 
+}
+
+void CGame::CatinProc(void)
+{
+	for (int nCntPlayer = 0; nCntPlayer < PLAYER_MAX; nCntPlayer++)
+	{
+		if (m_Catin[nCntPlayer].bCatin == true)
+		{
+			m_Catin[nCntPlayer].nCntCaatin++;
+
+			int nIndex = (nCntPlayer == PLAYER_1) ? UI_CUTIN_P1 : UI_CUTIN_P2;
+
+			if (m_Catin[nCntPlayer].nCntCaatin <= 12)
+			{
+				D3DXVECTOR2 *pSize =  pC2dui[nIndex]->GetImage()->GetSize();
+				pSize->x += 22.0f;
+				pSize->y += 22.0f;
+				pC2dui[nIndex]->GetImage()->UpdateVatexPosition();
+			}
+			if (m_Catin[nCntPlayer].nCntCaatin == 32)
+			{
+				D3DXVECTOR2 *pSize = pC2dui[nIndex]->GetImage()->GetSize();
+				pSize->x = 0.0f;
+				pSize->y = 0.0f;
+				pC2dui[nIndex]->GetImage()->UpdateVatexPosition();
+				m_Catin[nCntPlayer].bCatin = false;
+				pC2dui[nIndex]->SetDisp(false);
+			}
+		}
+	}
 }
