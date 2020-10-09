@@ -17,6 +17,7 @@
 //-------------------------------------------------------------------------------------------------------------
 class C2DUi;
 class CPlayer;
+class CBomb;
 class CGame : public CMode
 {
 public:
@@ -81,7 +82,7 @@ private:
 
 	C2DUi *pC2dui[UI_MAX];					// ２DUIポインタ
 	CPlayer *m_pPlayer[PLAYER_MAX];				// プレイヤポインタ
-
+	CBomb *m_pBomb[PLAYER_MAX];				// 爆弾ポインタ
 	static PLAYEROFFSET m_offset[PLAYER_MAX];
 
 	float m_fGageScal[SCAL_P2_GAGE_MAX];

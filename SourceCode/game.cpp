@@ -11,6 +11,7 @@
 #include "2DUI.h"
 
 #include "player.h"
+#include "Bomb.h"
 
 #include "renderer.h"
 #include "keyboard.h"
@@ -30,8 +31,8 @@
 // 静的メンバ変数の初期化
 //-------------------------------------------------------------------------------------------------------------
 CGame::PLAYEROFFSET CGame::m_offset[PLAYER_MAX] = {
-	{ D3DXVECTOR3(100.0f, 600.0f, 0.0f),D3DXVECTOR2(50.0f, 50.0f) },
-	{ D3DXVECTOR3(100.0f, 600.0f, 0.0f),D3DXVECTOR2(50.0f, 50.0f) },
+	{ D3DXVECTOR3(100.0f, 550.0f, 0.0f),D3DXVECTOR2(50.0f, 50.0f) },
+	{ D3DXVECTOR3(100.0f, 550.0f, 0.0f),D3DXVECTOR2(50.0f, 50.0f) },
 };
 
 //-------------------------------------------------------------------------------------------------------------
@@ -101,11 +102,12 @@ void CGame::Init(void)
 	pC2dui[UI_P2_GAGE_Y]->GetImage()->SetOriginType(ORIGINVERTEXTYPE_LOWERCENTER);
 	pC2dui[UI_P2_GAGE_Y]->GetImage()->UpdateVatexPosition();
 
-	//プレイヤーの最大ループ
-	//for (int nCntPlayer = 0; nCntPlayer < PLAYER_MAX; nCntPlayer++)
-	//{
-	//	m_pPlayer[nCntPlayer] = CPlayer::Create(m_offset[nCntPlayer].pos, m_offset[nCntPlayer].size);
-	//}
+	// プレイヤーの最大ループ
+	for (int nCntPlayer = 0; nCntPlayer < PLAYER_MAX; nCntPlayer++)
+	{
+		m_pPlayer[nCntPlayer] = CPlayer::Create(m_offset[nCntPlayer].pos, m_offset[nCntPlayer].size);
+		m_pBomb[nCntPlayer] = CBomb::Create(m_offset[nCntPlayer].pos, m_offset[nCntPlayer].size, nCntPlayer);
+	}
 
 	CMode::Init(STATE_NORMAL, 10);
 
@@ -184,12 +186,14 @@ void CGame::UpdateNormal(void)
 			{
 				m_bMoveGage[SCAL_P2_GAGE_X] = false;
 				m_bMoveGage[SCAL_P2_GAGE_Y] = false;
+				m_pBomb[PLAYER_2]->Fire(m_fGageScaForce[SCAL_P2_GAGE_X], m_fGageScaForce[SCAL_P2_GAGE_Y]);
 			}
 
 			if (CManager::GetKeyboard().GetTrigger(DIK_LSHIFT))
 			{
 				m_bMoveGage[SCAL_P1_GAGE_X] = false;
 				m_bMoveGage[SCAL_P1_GAGE_Y] = false;
+				m_pBomb[PLAYER_1]->Fire(m_fGageScaForce[SCAL_P1_GAGE_X], m_fGageScaForce[SCAL_P1_GAGE_Y]);
 			}
 
 			MLB_DEFAULT:break;

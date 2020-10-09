@@ -153,7 +153,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="score.cpp" />
     <ClCompile Include="SourceCode\2Deffect.cpp" />
     <ClCompile Include="SourceCode\2DUI.cpp" />
     <ClCompile Include="SourceCode\3Dparticle.cpp" />
@@ -183,6 +182,7 @@
     <ClCompile Include="SourceCode\Scene.cpp" />
     <ClCompile Include="SourceCode\Scene2D.cpp" />
     <ClCompile Include="SourceCode\scene_load.cpp" />
+    <ClCompile Include="SourceCode\score.cpp" />
     <ClCompile Include="SourceCode\sound.cpp" />
     <ClCompile Include="SourceCode\texture.cpp" />
     <ClCompile Include="SourceCode\title.cpp" />
@@ -190,7 +190,6 @@
     <ClCompile Include="SourceCode\ui.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="score.h" />
     <ClInclude Include="SourceCode\2Deffect.h" />
     <ClInclude Include="SourceCode\2DUI.h" />
     <ClInclude Include="SourceCode\3Dparticle.h" />
@@ -220,6 +219,7 @@
     <ClInclude Include="SourceCode\Scene.h" />
     <ClInclude Include="SourceCode\Scene2D.h" />
     <ClInclude Include="SourceCode\scene_load.h" />
+    <ClInclude Include="SourceCode\score.h" />
     <ClInclude Include="SourceCode\sound.h" />
     <ClInclude Include="SourceCode\texture.h" />
     <ClInclude Include="SourceCode\title.h" />
