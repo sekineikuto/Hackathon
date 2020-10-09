@@ -120,7 +120,8 @@ void CBomb::Fire(float & fForce, float & fForceY)
 	}
 	float fResultForce = fForce *0.5f +0.5f;
 	float fResultForceY = fForceY *0.5f +0.5f;
-
+	fResultForce = 1.0f;
+	fResultForceY = 1.0f;
 
 	if (m_nPlayer_ID == CGame::PLAYER_1)
 	{
