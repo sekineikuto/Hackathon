@@ -64,6 +64,10 @@ public:
 		NAME_PY01,
 		NAME_TITLEBG000,
 		NAME_PIENDISTANCE,
+		NAME_WIN,
+		NAME_LOSE,
+		NAME_PIEN_LOSE,
+		NAME_PIEN_WIN,
 		NAME_MAX						// �ő吔
 	};
 	enum

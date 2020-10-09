@@ -37,3 +37,7 @@ data/TEXTURE/PLAYER/PY00.png
 data/TEXTURE/PLAYER/PY01.png
 data/TEXTURE/UI/TITLE_BG000.png
 data/TEXTURE/UI/pienDistance.png
+data/TEXTURE/UI/win.png
+data/TEXTURE/UI/lose.png
+data/TEXTURE/UI/pien_lose.png
+data/TEXTURE/UI/pien_win.png
