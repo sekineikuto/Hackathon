@@ -84,6 +84,7 @@ void CNumericString::Uninit(void)
 {
 	if (m_pNumber != nullptr)
 	{
+		m_pNumber->Unint();
 		delete[]m_pNumber;
 		m_pNumber = nullptr;
 	}

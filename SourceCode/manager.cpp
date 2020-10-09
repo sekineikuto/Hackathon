@@ -26,6 +26,7 @@
 #include "result.h"
 #include "ranking.h"
 #include "scene_load.h"
+#include "score.h"
 
 //-------------------------------------------------------------------------------------------------------------
 // 静的メンバ変数の初期化
@@ -102,6 +103,7 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 
 	// テクスチャの読み込み
 	CTexture::Load();
+	CScore::Load();
 	// モデルの読み込み
 	//CModel::Load();
 	return S_OK;
@@ -115,6 +117,7 @@ void CManager::Uninit(void)
 	SceneAllReleaseAndSoundStop();
 	// モデルの開放
 	//CModel::Unload();
+	CScore::SaveScore();
 	// テクスチャの開放
 	CTexture::Unload();
 #ifdef _DEBUG
