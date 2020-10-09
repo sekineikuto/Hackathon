@@ -38,7 +38,7 @@ public:
 	void Update(void);							// 更新
 	void Draw(void);							// 描画
 
-	static CScore *Create(D3DXVECTOR3 & pos, D3DXVECTOR2 & size, float fValue, bool bFlash);		// 生成
+	static CScore *Create(D3DXVECTOR3 & pos, D3DXVECTOR2 & size, float fValue);		// 生成
 
 	static void SetPlayerScore(const int nPlayer, const float fScore) { m_fPlayerScore[nPlayer] = fScore; } // スコアの設定
 	void SetScore(const float fScore);			// スコアの設定
@@ -58,8 +58,6 @@ private:
 	static float m_fDefaultScore[MAX_NUM_SCORE];	// デフォルトのスコア
 	CNumericString * m_pNumStrInt;					// 整数ナンバーのポインタ
 	CNumericString * m_pNumStrFloat;				// 小数ナンバーのポインタ
-	bool m_bFlash;
-	int	m_nCntFlash;
 };
 
 #endif
