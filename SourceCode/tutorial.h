@@ -24,6 +24,7 @@ public:
 	typedef enum
 	{
 		TUTORIALUI_DISCRIPTION = 0,		// 説明
+		TUTORIALUI_PRESSENTERICON,		// プレスエンターアイコン
 		TUTORIALUI_MAX
 	} TUTORIALUI;
 
