@@ -43,13 +43,12 @@ void CTutorial::Init(void)
 		set[nCntUi].size = Ui_Load[nCntUi].size;
 	}
 
-	set[TUTORIALUI_DISCRIPTION].mask.unMask = C2DUi::MASK_FLASHING;
 	pC2dui[TUTORIALUI_DISCRIPTION] = C2DUi::Create(set[TUTORIALUI_DISCRIPTION]);
-	pC2dui[TUTORIALUI_DISCRIPTION]->GetFlashing()->m_nTiming = 3;
 	// プレスエンターアイコンの設定
 	set[TUTORIALUI_PRESSENTERICON].mask.unMask = C2DUi::MASK_FADE | C2DUi::MASK_FLASHING;
 	// プレスエンターのアイコン生成
 	pC2dui[TUTORIALUI_PRESSENTERICON] = C2DUi::Create(set[TUTORIALUI_PRESSENTERICON]);
+	pC2dui[TUTORIALUI_PRESSENTERICON]->GetFlashing()->m_nTiming = 3;
 	pC2dui[TUTORIALUI_PRESSENTERICON]->GetFade()->bLoop = true;
 	pC2dui[TUTORIALUI_PRESSENTERICON]->GetFade()->nTiming = 30;
 	pC2dui[TUTORIALUI_PRESSENTERICON]->GetFade()->fChangeValue = 1.0f / pC2dui[TUTORIALUI_PRESSENTERICON]->GetFade()->nTiming;
@@ -74,12 +73,21 @@ void CTutorial::Update(void)
 {
 	if (this->m_State == STATE_NORMAL)
 	{
-		pC2dui[TUTORIALUI_PRESSENTERICON]->GetFade()->Update(pC2dui[TUTORIALUI_PRESSENTERICON]->GetImage());
+		// フェード更新処理
+		for (int nCntUi = 0; nCntUi < TUTORIALUI_MAX; nCntUi++)
+		{
+			if (pC2dui[nCntUi]->GetFade() == NULL) continue;
+			pC2dui[nCntUi]->GetFade()->Update(pC2dui[nCntUi]->GetImage());
+		}
 	}
 	else if (this->m_State == STATE_OUT)
 	{
-		pC2dui[TUTORIALUI_DISCRIPTION]->GetFlashing()->Update(pC2dui[TUTORIALUI_DISCRIPTION]);
-		pC2dui[TUTORIALUI_PRESSENTERICON]->GetFlashing()->Update(pC2dui[TUTORIALUI_PRESSENTERICON]);
+		// フラッシュ更新処理
+		for (int nCntUi = 0; nCntUi < TUTORIALUI_MAX; nCntUi++)
+		{
+			if (pC2dui[nCntUi]->GetFlashing() == NULL) continue;
+			pC2dui[nCntUi]->GetFlashing()->Update(pC2dui[nCntUi]);
+		}
 		if (this->m_nCntState == this->m_nMaxCntState)
 		{
 			CManager::GetRenderer().GetFade()->SetFade(CManager::MODE_GAME);
