@@ -170,14 +170,6 @@ void CTitle::Update(void)
 			CManager::GetSound().PlaySound(CSound::SOUND_LABEL_SE_ENTER);
 		}
 	}
-#ifdef _DEBUG
-	// テストパーティクル
-	if (CManager::GetKeyboard().GetTrigger(DIK_SPACE))
-	{
-		C3DParticle::Create(C3DParticle::PARTICLE_ID_EXPLOSION, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-	}
-#endif // _DEBUG
-
 }
 
 //-------------------------------------------------------------------------------------------------------------
