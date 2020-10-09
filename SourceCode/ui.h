@@ -40,7 +40,7 @@ public:
 	// ※UIのファイル内の個数と同じにすること
 	typedef enum
 	{
-		UITYPE_GAMEUI = 0,		// 仮で付けているので変えてもいいよ
+		UITYPE_TITLEUI = 0,		// 仮で付けているので変えてもいいよ
 		UITYPE_MAX
 	} UITYPE;
 	// UIの情報格納用型名
