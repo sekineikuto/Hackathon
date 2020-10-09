@@ -62,10 +62,9 @@ public:
 
 	typedef enum
 	{
-		WINSTATE_NONE = -1,
+		WINSTATE_1P2P,
 		WINSTATE_1P,
 		WINSTATE_2P,
-		WINSTATE_1P2P,
 		WINSTATE_MAX
 	} GAMEWINSTATE;
 
@@ -74,6 +73,13 @@ public:
 		D3DXVECTOR3 pos;
 		D3DXVECTOR2 size;
 	} PLAYEROFFSET;
+
+	typedef struct
+	{
+		D3DXVECTOR3 pos;
+		D3DXVECTOR3 fire;
+		D3DXVECTOR2 size;
+	} BOMBOFFSET;
 
 	typedef struct PLAYERPIEN
 	{
@@ -122,6 +128,7 @@ private:
 	CPlayer *m_pPlayer[PLAYER_MAX];				// プレイヤポインタ
 	CBomb *m_pBomb[PLAYER_MAX];					// 爆弾ポインタ
 	static PLAYEROFFSET m_offset[PLAYER_MAX];
+	static BOMBOFFSET m_Bomoffset[PLAYER_MAX];
 
 	float m_fGageScal[SCAL_P2_GAGE_MAX];
 	float m_fGageScaForce[SCAL_P2_GAGE_MAX];

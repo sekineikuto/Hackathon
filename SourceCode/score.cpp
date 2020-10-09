@@ -9,16 +9,18 @@
 #include "manager.h"
 #include "renderer.h"
 #include "texture.h"
+#include "2DUI.h"
 
 //=============================================================================
 // マクロ定義
 //=============================================================================
 #define FILENAME_RANKING	("data/TEXT/Ranking.txt")	// ランキングのテキストファイル
+#define HEIGHT_DOT			(25.0f)
 
 //=============================================================================
 // 静的メンバ変数
 //=============================================================================
-float CScore::m_fPlayerScore					= 0;
+float CScore::m_fPlayerScore[MAX_PLAYER]		= {};
 float CScore::m_fDefaultScore[MAX_NUM_SCORE]	= {};
 LPDIRECT3DTEXTURE9 CScore::m_pTexture = NULL;
 
@@ -97,17 +99,33 @@ CScore *CScore::Create(D3DXVECTOR3 & pos, D3DXVECTOR2 & size, float fValue)
 	// 整数の値を取得
 	int IntValue = (int)fValue;
 	// 小数の値を取得
-	int FloatValue = (int)(fValue - (float)IntValue) * 100;
+	float FloatValue = (fValue - (float)IntValue) * 1000.0f;
 
 	// メモリ確保
 	CScore *pScore = new CScore;
 	// 初期化
 	pScore->Init();
-	// ナンバーの生成
+	// 整数の生成
 	pScore->m_pNumStrInt = CNumericString::Create(pos, MYLIB_D3DXCOR_SET, size, 0.0f, IntValue);
 	pScore->m_pNumStrInt->BindTexture(CTexture::GetTextureInfo(CTexture::NAME_NUMBER));
-	// ナンバーの生成
-	pScore->m_pNumStrFloat = CNumericString::Create(pos, MYLIB_D3DXCOR_SET, size, 0.0f, FloatValue);
+	
+	// 小数の座標を計算
+	D3DXVECTOR3 posDot = D3DXVECTOR3(pos.x + size.x * (pScore->m_pNumStrInt->GetDigit() * 2), pos.y + HEIGHT_DOT, pos.z);
+
+	C2DUi::SETING2DUI set;
+	set.bDisp = true;
+	set.col = MYLIB_D3DXCOR_SET;
+	set.fRotation = 0.0f;
+	set.nTextureID = CTexture::NAME_DOT;
+	set.nValue = 123456789;
+	set.pos = posDot;
+	set.size = D3DXVECTOR2(60.0f, 120.0f);
+	pScore->pC2dui = C2DUi::Create(set);
+
+	// 小数の座標を計算
+	D3DXVECTOR3 posFloat = D3DXVECTOR3(posDot.x + size.x, pos.y, pos.z);
+	// 小数の生成
+	pScore->m_pNumStrFloat = CNumericString::Create(posFloat, MYLIB_D3DXCOR_SET, size, 0.0f, (int)FloatValue);
 	pScore->m_pNumStrFloat->BindTexture(CTexture::GetTextureInfo(CTexture::NAME_NUMBER));
 	// 値を返す
 	return pScore;
@@ -168,10 +186,16 @@ HRESULT CScore::Load(void)
 				{
 				}
 				// スコアが来たら
-				else if (strcmp(cHeadText, "PLAYERSCORE") == 0)
+				else if (strcmp(cHeadText, "PLAYERSCORE_1") == 0)
 				{
 					// モデルタイプ数の取得
-					sscanf(cReadText, "%s %s %f", &cDieText, &cDieText, &m_fPlayerScore);
+					sscanf(cReadText, "%s %s %f", &cDieText, &cDieText, &m_fPlayerScore[0]);
+				}
+				// スコアが来たら
+				else if (strcmp(cHeadText, "PLAYERSCORE_2") == 0)
+				{
+					// モデルタイプ数の取得
+					sscanf(cReadText, "%s %s %f", &cDieText, &cDieText, &m_fPlayerScore[1]);
 				}
 				// スコアが来たら
 				else if (strcmp(cHeadText, "SCORE") == 0)
@@ -205,8 +229,12 @@ HRESULT CScore::Load(void)
 //=============================================================================
 HRESULT CScore::SaveScore(void)
 {
+	float fWinScore = m_fPlayerScore[0];
+	if (fWinScore < m_fPlayerScore[1])
+		fWinScore = m_fPlayerScore[1];
+
 	// 最低スコアをプレイヤーのものに書き換え
-	m_fDefaultScore[5] = m_fPlayerScore;
+	m_fDefaultScore[5] = fWinScore;
 
 	// ランキングの入れ替え
 	for (int nCount = 0; nCount < MAX_NUM_SCORE - 1; nCount++)
@@ -251,8 +279,13 @@ HRESULT CScore::SaveScore(void)
 		fputs(cComment0, pFile);															// \n
 
 		// コメント設定
-		sprintf(cWriteText, "PLAYERSCORE : %.3f\n",
-			m_fPlayerScore);
+		sprintf(cWriteText, "PLAYERSCORE_1 : %.3f\n",
+			m_fPlayerScore[0]);
+		fputs(cWriteText, pFile);														// PLAYERSCORE = m_fPlayerScore
+
+		// コメント設定
+		sprintf(cWriteText, "PLAYERSCORE_2 : %.3f\n",
+			m_fPlayerScore[1]);
 		fputs(cWriteText, pFile);														// PLAYERSCORE = m_fPlayerScore
 
 		for (int nCntScore = 0; nCntScore < MAX_NUM_SCORE; nCntScore++)

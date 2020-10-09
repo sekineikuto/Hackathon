@@ -36,7 +36,7 @@ public:
 	void Draw(void);				// •`‰æ
 private:
 	static D3DXVECTOR3 m_scorePos[MAX_NUMRANK];
-	CScore *m_pScore;
+	CScore *m_pScore[MAX_NUMRANK];
 };
 
 #endif

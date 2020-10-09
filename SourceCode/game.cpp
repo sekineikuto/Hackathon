@@ -21,23 +21,31 @@
 #include "Scene2D.h"
 
 #include "texture.h"
+#include "result.h"
+
+#include "score.h"
 
 //-------------------------------------------------------------------------------------------------------------
 // マクロ定義 
 //-------------------------------------------------------------------------------------------------------------
 #define GAME_GAGE_MAX			150.0f
 #define GAME_EXPOSURE_RANGE		277.0f
-#define GAME_TIME				15
+#define GAME_TIME				30
 
 //-------------------------------------------------------------------------------------------------------------
 // 静的メンバ変数の初期化
 //-------------------------------------------------------------------------------------------------------------
 CGame::PLAYEROFFSET CGame::m_offset[PLAYER_MAX] = {
-	{ D3DXVECTOR3(200.0f, 550.0f, 0.0f),D3DXVECTOR2(50.0f, 50.0f) },
-	{ D3DXVECTOR3(1080.0f, 550.0f, 0.0f),D3DXVECTOR2(50.0f, 50.0f) },
+	{ D3DXVECTOR3(250.0f, 550.0f, 0.0f),D3DXVECTOR2(120.0f, 160.0f) },
+	{ D3DXVECTOR3(1030.0f, 550.0f, 0.0f),D3DXVECTOR2(120.0f, 160.0f) },
+};
+CGame::BOMBOFFSET CGame::m_Bomoffset[PLAYER_MAX] =
+{
+	{ D3DXVECTOR3(180.0f, 480.0f, 0.0f),D3DXVECTOR3(300.0f, 500.0f, 0.0f),D3DXVECTOR2(50.0f, 50.0f) },
+	{ D3DXVECTOR3(1080.0f, 500.0f, 0.0f),D3DXVECTOR3(980.0f, 500.0f, 0.0f),D3DXVECTOR2(50.0f, 50.0f) },
 };
 
-CGame::GAMEWINSTATE CGame::m_GameWinState = WINSTATE_NONE;
+CGame::GAMEWINSTATE CGame::m_GameWinState = WINSTATE_1P2P;
 CGame::PLAYERPIEN   CGame::m_PlayerPien;
 CGame::PLAYERDIST	CGame::m_PlaerDist;
 
@@ -72,8 +80,8 @@ void CGame::Init(void)
 		C2DUi::SETING2DUI(0,CTexture::NAME_POWERGAUGE_2P, true, D3DXVECTOR3(950.0f,650.0f,0.0f), MYLIB_D3DXCOR_SET, D3DXVECTOR2(300.0f,60.0f),0.0f, 0),
 		C2DUi::SETING2DUI(0,CTexture::NAME_ANGLEGAUGE_2P, true, D3DXVECTOR3(1180.0f,300.0f,0.0f), MYLIB_D3DXCOR_SET, D3DXVECTOR2(60.0f,280.0f),0.0f, 0),
 
-		C2DUi::SETING2DUI(0,CTexture::NAME_GAMEBG, false, D3DXVECTOR3(300.0f,360.0f,0.0f), MYLIB_D3DXCOR_SET, D3DXVECTOR2(0.0f,0.0f),0.0f, 0),
-		C2DUi::SETING2DUI(0,CTexture::NAME_GAMEBG, false, D3DXVECTOR3(980.0f,360.0f,0.0f), MYLIB_D3DXCOR_SET, D3DXVECTOR2(0.0f,0.0f),0.0f, 0),
+		C2DUi::SETING2DUI(0,CTexture::NAME_PY03, false, D3DXVECTOR3(300.0f,360.0f,0.0f), MYLIB_D3DXCOR_SET, D3DXVECTOR2(0.0f,0.0f),0.0f, 0),
+		C2DUi::SETING2DUI(0,CTexture::NAME_PB03, false, D3DXVECTOR3(980.0f,360.0f,0.0f), MYLIB_D3DXCOR_SET, D3DXVECTOR2(0.0f,0.0f),0.0f, 0),
 	};
 	
 	CScene::PRIORITY pri[UI_MAX] = {
@@ -118,13 +126,16 @@ void CGame::Init(void)
 	for (int nCntPlayer = 0; nCntPlayer < PLAYER_MAX; nCntPlayer++)
 	{
 		m_pPlayer[nCntPlayer] = CPlayer::Create(m_offset[nCntPlayer].pos, m_offset[nCntPlayer].size);
-		m_pBomb[nCntPlayer] = CBomb::Create(m_offset[nCntPlayer].pos, m_offset[nCntPlayer].size, nCntPlayer);
 
 		m_Catin[nCntPlayer].bCatin = false;
 		m_Catin[nCntPlayer].nCntCaatin = 0;
-
 	}
-
+	for (int nCntPlayer = 0; nCntPlayer < PLAYER_MAX; nCntPlayer++)
+	{
+		m_pBomb[nCntPlayer] = CBomb::Create(m_Bomoffset[nCntPlayer].pos, m_Bomoffset[nCntPlayer].size, nCntPlayer);
+	}
+	m_pPlayer[0]->GetScene2D()->BindTexture(CTexture::GetTextureInfo(CTexture::NAME_PY00));
+	m_pPlayer[1]->GetScene2D()->BindTexture(CTexture::GetTextureInfo(CTexture::NAME_PB00));
 	CMode::Init(STATE_NORMAL, 30);
 
 	for (int nCntaGage = 0; nCntaGage < SCAL_P2_GAGE_MAX ; nCntaGage++)
@@ -141,6 +152,7 @@ void CGame::Init(void)
 //-------------------------------------------------------------------------------------------------------------
 void CGame::Uninit(void)
 {
+	CResult::SetWinPlayer(m_GameWinState);
 }
 
 //-------------------------------------------------------------------------------------------------------------
@@ -211,19 +223,30 @@ void CGame::UpdateNormal(void)
 			{
 				m_bMoveGage[SCAL_P2_GAGE_X] = false;
 				m_bMoveGage[SCAL_P2_GAGE_Y] = false;
-				m_pBomb[PLAYER_2]->Fire(m_fGageScal[SCAL_P2_GAGE_X], m_fGageScal[SCAL_P2_GAGE_Y]);
+				m_pBomb[PLAYER_2]->Fire(m_fGageScal[SCAL_P2_GAGE_X], m_fGageScal[SCAL_P2_GAGE_Y],m_Bomoffset[PLAYER_2].fire);
 
 				pC2dui[UI_CUTIN_P2]->SetDisp(true);
-				m_Catin[PLAYER_2].bCatin = true;
+				m_pPlayer[PLAYER_2]->GetScene2D()->BindTexture(CTexture::GetTextureInfo(CTexture::NAME_PB01));
+
+				if (m_fGageScal[SCAL_P2_GAGE_X] >= 0.75f &&
+					m_fGageScal[SCAL_P2_GAGE_Y] >= 0.75f)
+				{
+					m_Catin[PLAYER_2].bCatin = true;
+				}
 			}
 			if (CManager::GetKeyboard().GetTrigger(DIK_LSHIFT))
 			{
 				m_bMoveGage[SCAL_P1_GAGE_X] = false;
 				m_bMoveGage[SCAL_P1_GAGE_Y] = false;
-				m_pBomb[PLAYER_1]->Fire(m_fGageScal[SCAL_P1_GAGE_X], m_fGageScal[SCAL_P1_GAGE_Y]);
+				m_pBomb[PLAYER_1]->Fire(m_fGageScal[SCAL_P1_GAGE_X], m_fGageScal[SCAL_P1_GAGE_Y], m_Bomoffset[PLAYER_1].fire);
 
+				m_pPlayer[PLAYER_1]->GetScene2D()->BindTexture(CTexture::GetTextureInfo(CTexture::NAME_PY01));
 				pC2dui[UI_CUTIN_P1]->SetDisp(true);
-				m_Catin[PLAYER_1].bCatin = true;
+				if (m_fGageScal[SCAL_P1_GAGE_X] >= 0.75f &&
+					m_fGageScal[SCAL_P1_GAGE_Y] >= 0.75f)
+				{
+					m_Catin[PLAYER_1].bCatin = true;
+				}
 			}
 
 			if (m_pBomb[PLAYER_1]->GetState() ==CBomb::STATE_LANDING &&
@@ -231,6 +254,12 @@ void CGame::UpdateNormal(void)
 			{
 				float fDistance1 =  m_pBomb[PLAYER_1]->GetDistance();
 				float fDistance2 =  m_pBomb[PLAYER_2]->GetDistance();
+
+				CScore::SetPlayerScore(PLAYER_1, fDistance1);
+				CScore::SetPlayerScore(PLAYER_2, fDistance2);
+
+				CResult::SetWinPlayer(m_GameWinState);
+
 
 				m_PlaerDist.fPlayer1Dist = fDistance1;
 				m_PlaerDist.fPlayer2Dist = fDistance2;
@@ -392,8 +421,8 @@ void CGame::CatinProc(void)
 			if (m_Catin[nCntPlayer].nCntCaatin <= 12)
 			{
 				D3DXVECTOR2 *pSize =  pC2dui[nIndex]->GetImage()->GetSize();
-				pSize->x += 22.0f;
-				pSize->y += 22.0f;
+				pSize->x += 35.0f;
+				pSize->y += 35.0f;
 				pC2dui[nIndex]->GetImage()->UpdateVatexPosition();
 			}
 			if (m_Catin[nCntPlayer].nCntCaatin == 32)

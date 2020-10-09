@@ -48,6 +48,8 @@ public:
 	void SetState(STATE state) { m_State = state; }
 	STATE & GetState(void) { return m_State; }
 
+	CScene2D *GetScene2D(void) { return m_pScene2D; }
+
 	D3DXVECTOR3 &GetPos(void);
 private:
 	CScene2D *m_pScene2D;					// シーン２Dポインタ

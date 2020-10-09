@@ -45,7 +45,7 @@ public:
 
 	void Expansion(void);															// –c’£
 
-	void Fire(float& fForce,float& fForceY);
+	void Fire(float& fForce, float& fForceY, D3DXVECTOR3 &pos);
 
 	void SetState(STATE state) { m_State = state; }
 	STATE & GetState(void) { return m_State; }
