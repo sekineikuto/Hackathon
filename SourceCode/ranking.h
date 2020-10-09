@@ -15,12 +15,14 @@
 //-------------------------------------------------------------------------------------------------------------
 // マクロ定義
 //-------------------------------------------------------------------------------------------------------------
-#define MAX_NUMSCORE	(5)		// 最大スコアの数
+#define MAX_NUMRANK	(5)		// 最大ランクの数
 
 //-------------------------------------------------------------------------------------------------------------
 // クラス定義
 //-------------------------------------------------------------------------------------------------------------
 class C2DUi;
+class CScore;
+
 class CRanking : public CMode
 {
 public:
@@ -32,14 +34,9 @@ public:
 	void Uninit(void);				// 終了
 	void Update(void);				// 更新
 	void Draw(void);				// 描画
-
-	static void SetPlayerScore(const float fScore) { m_fPlayerScore = fScore; }	// プレイヤーのスコア設定
-
 private:
-	C2DUi *pC2dui;					// ２DUIポインタ
-
-	static float m_fPlayerScore;	// プレイヤーのスコア
-	static float m_fDefaultScore[MAX_NUMSCORE];	// デフォルトのスコア
+	static D3DXVECTOR3 m_scorePos[MAX_NUMRANK];
+	CScore *m_pScore;
 };
 
 #endif
