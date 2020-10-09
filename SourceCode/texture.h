@@ -68,6 +68,8 @@ public:
 		NAME_LOSE,
 		NAME_PIEN_LOSE,
 		NAME_PIEN_WIN,
+		NAME_ANGLEGAUGE,
+		NAME_POWERGAUGE,
 		NAME_MAX						// �ő吔
 	};
 	enum

@@ -2,7 +2,7 @@
 # テクスチャファイル情報
 #---------------------------------------------
 [TEXTURE][NUMBER]
-NUMBER = 43
+NUMBER = 45
 
 [TEXTURE][FILENAME]
 FILENAME = DATA\TEXTURE\EFFECT\Effect000.jpg
@@ -51,3 +51,5 @@ FILENAME = DATA\TEXTURE\UI\win.png
 FILENAME = DATA\TEXTURE\UI\lose.png
 FILENAME = DATA\TEXTURE\UI\pien_lose.png
 FILENAME = DATA\TEXTURE\UI\pien_win.png
+FILENAME = DATA\TEXTURE\UI\AngleGauge.png
+FILENAME = DATA\TEXTURE\UI\PowerGauge.png
