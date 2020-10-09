@@ -117,6 +117,7 @@ void CManager::Uninit(void)
 	SceneAllReleaseAndSoundStop();
 	// モデルの開放
 	//CModel::Unload();
+	CScore::SaveScore();
 	// テクスチャの開放
 	CTexture::Unload();
 #ifdef _DEBUG
