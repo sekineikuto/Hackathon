@@ -16,6 +16,7 @@
 //=============================================================================
 #define FILENAME_RANKING	("data/TEXT/Ranking.txt")	// ランキングのテキストファイル
 #define HEIGHT_DOT			(25.0f)
+#define TIME_FLASH			(10)
 
 //=============================================================================
 // 静的メンバ変数
@@ -45,6 +46,8 @@ CScore::~CScore()
 //=============================================================================
 HRESULT CScore::Init(void)
 {
+	m_bFlash = false;
+	m_nCntFlash = 0;
 	// 成功
 	return S_OK;
 }
@@ -74,6 +77,16 @@ void CScore::Uninit(void)
 //=============================================================================
 void CScore::Update(void)
 {
+	if (m_bFlash)
+	{
+		m_nCntFlash++;
+		if (m_nCntFlash >= TIME_FLASH)
+		{
+			m_nCntFlash = 0;
+		}
+		pC2dui->GetFlashing()->Update(pC2dui);
+	}
+
 	if (m_pNumStrInt)
 		m_pNumStrInt->Update();
 	if (m_pNumStrFloat)
@@ -85,6 +98,9 @@ void CScore::Update(void)
 //=============================================================================
 void CScore::Draw(void)
 {
+	if (m_bFlash && m_nCntFlash % 5 == 0)
+		return;
+
 	if (m_pNumStrInt)
 		m_pNumStrInt->Draw();
 	if (m_pNumStrFloat)
@@ -94,7 +110,7 @@ void CScore::Draw(void)
 //=============================================================================
 // 生成
 //=============================================================================
-CScore *CScore::Create(D3DXVECTOR3 & pos, D3DXVECTOR2 & size, float fValue)
+CScore *CScore::Create(D3DXVECTOR3 & pos, D3DXVECTOR2 & size, float fValue, bool bFlash)
 {
 	// 整数の値を取得
 	int IntValue = (int)fValue;
@@ -108,7 +124,8 @@ CScore *CScore::Create(D3DXVECTOR3 & pos, D3DXVECTOR2 & size, float fValue)
 	// 整数の生成
 	pScore->m_pNumStrInt = CNumericString::Create(pos, MYLIB_D3DXCOR_SET, size, 0.0f, IntValue);
 	pScore->m_pNumStrInt->BindTexture(CTexture::GetTextureInfo(CTexture::NAME_NUMBER));
-	
+	pScore->m_bFlash = bFlash;
+
 	// 小数の座標を計算
 	D3DXVECTOR3 posDot = D3DXVECTOR3(pos.x + size.x * (pScore->m_pNumStrInt->GetDigit() * 2), pos.y + HEIGHT_DOT, pos.z);
 
@@ -120,10 +137,15 @@ CScore *CScore::Create(D3DXVECTOR3 & pos, D3DXVECTOR2 & size, float fValue)
 	set.nValue = 123456789;
 	set.pos = posDot;
 	set.size = D3DXVECTOR2(60.0f, 120.0f);
+	if (bFlash)
+		set.mask.unMask = C2DUi::MASK_FLASHING;
 	pScore->pC2dui = C2DUi::Create(set);
+	if (bFlash)
+		pScore->pC2dui->GetFlashing()->m_nTiming = TIME_FLASH / 2;
 
 	// 小数の座標を計算
 	D3DXVECTOR3 posFloat = D3DXVECTOR3(posDot.x + size.x, pos.y, pos.z);
+
 	// 小数の生成
 	pScore->m_pNumStrFloat = CNumericString::Create(posFloat, MYLIB_D3DXCOR_SET, size, 0.0f, (int)FloatValue);
 	pScore->m_pNumStrFloat->BindTexture(CTexture::GetTextureInfo(CTexture::NAME_NUMBER));
