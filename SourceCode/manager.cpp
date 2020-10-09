@@ -25,7 +25,7 @@
 #include "game.h"
 #include "result.h"
 #include "ranking.h"
-
+#include "scene_load.h"
 
 //-------------------------------------------------------------------------------------------------------------
 // 静的メンバ変数の初期化
@@ -93,7 +93,8 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	m_Camera.Init();
 	// ライトの生成
 	m_Light.Init();
-
+	// シーン用の読み込み処理
+	CScene_load::LoadAll();
 #ifdef _DEBUG
 	// デバッグの生成
 	m_DebugProc.Init();
@@ -120,6 +121,8 @@ void CManager::Uninit(void)
 	// デバッグの終了処理
 	m_DebugProc.Uninit();
 #endif // _DEBUG
+	// シーン用の読み込み処理
+	CScene_load::UnLoadAll();
 
 	// ライトの終了処理
 	m_Light.Uninit();
@@ -234,7 +237,7 @@ void CManager::SetFPS(int fps)
 void CManager::SetHash(void)
 {
 	// 設定用キー
-	char SetingKey[FILE_MAX][16] = 
+	char SetingKey[FILE_MAX][16] =
 	{
 		{ "SOUND" },
 		{ "TITLEUI" },
