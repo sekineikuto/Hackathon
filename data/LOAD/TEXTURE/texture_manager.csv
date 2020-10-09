@@ -9,6 +9,10 @@ data/TEXTURE/EFFECT/orbit002.jpg
 data/TEXTURE/EFFECT/orbit003.png
 data/TEXTURE/EFFECT/wallskin000.jpg
 data/TEXTURE/EFFECT/wallskin000.png
+data/TEXTURE/EFFECT/pien/TextPaon_X.png
+data/TEXTURE/EFFECT/pien/TextPaon_Y.png
+data/TEXTURE/EFFECT/pien/TextPien_X.png
+data/TEXTURE/EFFECT/pien/TextPien_Y.png
 data/TEXTURE/BG/GameBG.jpg
 data/TEXTURE/PLAYER/player.png
 data/TEXTURE/UI/Frame000.png
@@ -19,3 +23,7 @@ data/TEXTURE/UI/PowerGauge_1P.png
 data/TEXTURE/UI/AngleGauge_2P.png
 data/TEXTURE/UI/PowerGauge_2P.png
 data/TEXTURE/UI/TitleName000.png
+data/TEXTURE/UI/button/PressEnter.png
+data/TEXTURE/UI/button/SkipEnter.png
+data/TEXTURE/UI/button/Shift_L.png
+data/TEXTURE/UI/button/Shift_R.png
