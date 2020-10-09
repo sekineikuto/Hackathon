@@ -60,12 +60,12 @@ void CGame::Init(void)
 	C2DUi::SETING2DUI set[UI_MAX] =
 	{
 		C2DUi::SETING2DUI(0,CTexture::NAME_GAMEBG , true, D3DXVECTOR3(640.0f, 360.0f, 0.0f), MYLIB_D3DXCOR_SET, D3DXVECTOR2(640.0f, 360.0f),0.0f, 0),
-		C2DUi::SETING2DUI(C2DUi::MASK_FADE | C2DUi::MASK_NUMBER,CTexture::NAME_NUMBER, true, D3DXVECTOR3(620.0f, 70.0f, 0.0f), MYLIB_D3DXCOR_SET, D3DXVECTOR2(20.0f, 60.0f),0.0f, GAME_TIME),
+		C2DUi::SETING2DUI(C2DUi::MASK_FADE | C2DUi::MASK_NUMBER,CTexture::NAME_NUMBER, true, D3DXVECTOR3(620.0f, 70.0f, 0.0f), MYLIB_D3DXCOR_SET, D3DXVECTOR2(35.0f, 105.0f),0.0f, GAME_TIME),
 
-		C2DUi::SETING2DUI(0,CTexture::NAME_GAMEBG, true, D3DXVECTOR3(52.0f,650.0f,0.0f), MYLIB_D3DXCOR_SET, D3DXVECTOR2(410.0f,40.0f),0.0f, 1000),
-		C2DUi::SETING2DUI(0,CTexture::NAME_GAMEBG, true, D3DXVECTOR3(100.0f,530.0f,0.0f), MYLIB_D3DXCOR_SET, D3DXVECTOR2(40.0f,465.0f),0.0f, 1000),
-		C2DUi::SETING2DUI(0,CTexture::NAME_GAMEBG, true, D3DXVECTOR3(1228.0f,650.0f,0.0f), MYLIB_D3DXCOR_SET, D3DXVECTOR2(410.0f,40.0f),0.0f, 1000),
-		C2DUi::SETING2DUI(0,CTexture::NAME_GAMEBG, true, D3DXVECTOR3(1180.0f,530.0f,0.0f), MYLIB_D3DXCOR_SET, D3DXVECTOR2(40.0f,465.0f),0.0f, 1000),
+		C2DUi::SETING2DUI(0,CTexture::NAME_POWERGAUGE, true, D3DXVECTOR3(52.0f,650.0f,0.0f), MYLIB_D3DXCOR_SET, D3DXVECTOR2(410.0f,60.0f),0.0f, 1000),
+		C2DUi::SETING2DUI(0,CTexture::NAME_ANGLEGAUGE, true, D3DXVECTOR3(100.0f,530.0f,0.0f), MYLIB_D3DXCOR_SET, D3DXVECTOR2(50.0f,465.0f),0.0f, 1000),
+		C2DUi::SETING2DUI(0,CTexture::NAME_POWERGAUGE, true, D3DXVECTOR3(1228.0f,650.0f,0.0f), MYLIB_D3DXCOR_SET, D3DXVECTOR2(410.0f,60.0f),0.0f, 1000),
+		C2DUi::SETING2DUI(0,CTexture::NAME_ANGLEGAUGE, true, D3DXVECTOR3(1180.0f,530.0f,0.0f), MYLIB_D3DXCOR_SET, D3DXVECTOR2(50.0f,465.0f),0.0f, 1000),
 
 		C2DUi::SETING2DUI(0,CTexture::NAME_POWERGAUGE_1P, true, D3DXVECTOR3(330.0f,650.0f,0.0f), MYLIB_D3DXCOR_SET, D3DXVECTOR2(300.0f,60.0f),0.0f, 0),
 		C2DUi::SETING2DUI(0,CTexture::NAME_ANGLEGAUGE_1P, true, D3DXVECTOR3(100.0f,300.0f,0.0f), MYLIB_D3DXCOR_SET, D3DXVECTOR2(60.0f,280.0f),0.0f, 0),
@@ -312,22 +312,42 @@ void CGame::GageUpdate(void)
 	{
 		pC2dui[UI_P1_GAGE_X]->GetImage()->SetSizeX(410.0f *m_fGageScal[0]);
 		pC2dui[UI_P1_GAGE_X]->GetImage()->UpdateVatexPosition();
+		D3DXCOLOR *col = pC2dui[UI_P1_GAGE_X]->GetImage()->GetColor();
+		col->b = 1.0f - m_fGageScal[0];
+		col->g = 1.0f - m_fGageScal[0];
+		pC2dui[UI_P1_GAGE_X]->GetImage()->UpdateVatexColor();
+
 	}
 	if (m_bMoveGage[SCAL_P1_GAGE_Y] == true)
 	{
 		pC2dui[UI_P1_GAGE_Y]->GetImage()->SetSizeY(465.0f *m_fGageScal[1]);
 		pC2dui[UI_P1_GAGE_Y]->GetImage()->UpdateVatexPosition();
+
+		D3DXCOLOR *col = pC2dui[UI_P1_GAGE_Y]->GetImage()->GetColor();
+		col->b = 1.0f - m_fGageScal[0];
+		col->g = 1.0f - m_fGageScal[0];
+		pC2dui[UI_P1_GAGE_Y]->GetImage()->UpdateVatexColor();
 	}
 
 	if (m_bMoveGage[SCAL_P2_GAGE_X] == true)
 	{
 		pC2dui[UI_P2_GAGE_X]->GetImage()->SetSizeX(410.0f *m_fGageScal[2]);
 		pC2dui[UI_P2_GAGE_X]->GetImage()->UpdateVatexPosition();
+
+		D3DXCOLOR *col = pC2dui[UI_P2_GAGE_X]->GetImage()->GetColor();
+		col->b = 1.0f - m_fGageScal[0];
+		col->g = 1.0f - m_fGageScal[0];
+		pC2dui[UI_P2_GAGE_X]->GetImage()->UpdateVatexColor();
 	}
 	if (m_bMoveGage[SCAL_P2_GAGE_Y] == true)
 	{
 		pC2dui[UI_P2_GAGE_Y]->GetImage()->SetSizeY(465.0f *m_fGageScal[3]);
 		pC2dui[UI_P2_GAGE_Y]->GetImage()->UpdateVatexPosition();
+
+		D3DXCOLOR *col = pC2dui[UI_P2_GAGE_Y]->GetImage()->GetColor();
+		col->b = 1.0f - m_fGageScal[0];
+		col->g = 1.0f - m_fGageScal[0];
+		pC2dui[UI_P2_GAGE_Y]->GetImage()->UpdateVatexColor();
 	}
 }
 
@@ -336,7 +356,7 @@ void CGame::GageUpdate(void)
 //-------------------------------------------------------------------------------------------------------------
 void CGame::GageScaForceShuffle(float * pGageScalForce)
 {
-	*pGageScalForce = (rand() % 5 + 5) * 0.01f;
+	*pGageScalForce = (rand() % 5+ 3) * 0.01f;
 }
 
 bool CGame::GageScalClamp(float * pGageScal, int *pSign)
