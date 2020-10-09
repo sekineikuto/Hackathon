@@ -43,6 +43,8 @@ public:
 	void UpdateMoveing(void);														// 更新
 	void UpdateLanding(void);														// 更新
 
+	void Expansion(void);															// 膨張
+
 	void Fire(float& fForce,float& fForceY);
 
 	void SetState(STATE state) { m_State = state; }

@@ -36,6 +36,10 @@ public:
 		UI_P2_FRAME_X,
 		UI_P2_FRAME_Y,
 
+
+		UI_CUTIN_P1,
+		UI_CUTIN_P2,
+
 		UI_MAX,
 	};
 
@@ -78,6 +82,19 @@ public:
 		bool bPlayer2Pien;
 	} PLAYERPIEN;
 
+	typedef struct PLAYERDIST
+	{
+		PLAYERDIST() : fPlayer1Dist(0.0f), fPlayer2Dist(0.0f) {}
+		float fPlayer1Dist;
+		float fPlayer2Dist;
+	}PLAYERDIST;
+
+	typedef struct CATIN
+	{
+		bool bCatin;	// カットインフラグ
+		int nCntCaatin;	// カットイン表示カウント
+	}CATIN;
+
 	CGame() {};					// コンストラクタ
 	~CGame() {};					// デストラクタ
 
@@ -87,6 +104,10 @@ public:
 	void Update(void);				// 更新
 	void Draw(void);				// 描画
 
+	static GAMEWINSTATE &GetGameWinState(void) { return m_GameWinState; }
+	static PLAYERPIEN   &GetPlayerPien(void) { return m_PlayerPien; }
+	static PLAYERDIST	&GetPlaerDist(void) { return m_PlaerDist; }
+
 private:
 	void UpdateNormal(void);		// 通常更新
 	void UpdateOut(void);			// アウト更新
@@ -94,6 +115,8 @@ private:
 	void GageUpdate(void);
 	void GageScaForceShuffle(float *pGageScalForce);
 	bool GageScalClamp(float *pGageScal,int *pSign);
+
+	void CatinProc(void);
 
 	C2DUi *pC2dui[UI_MAX];						// ２DUIポインタ
 	CPlayer *m_pPlayer[PLAYER_MAX];				// プレイヤポインタ
@@ -107,6 +130,9 @@ private:
 
 	static GAMEWINSTATE m_GameWinState;
 	static PLAYERPIEN   m_PlayerPien;
+	static PLAYERDIST	m_PlaerDist;
+
+	CATIN m_Catin[PLAYER_MAX];
 	
 };
 

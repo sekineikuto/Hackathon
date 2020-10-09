@@ -15,7 +15,7 @@
 //-------------------------------------------------------------------------------------------------------------
 // マクロ定義
 //-------------------------------------------------------------------------------------------------------------
-#define BOMB_BASEFORCE 15.0f
+#define BOMB_BASEFORCE 13.5f
 
 //-------------------------------------------------------------------------------------------------------------
 // 生成
@@ -37,7 +37,7 @@ void CBomb::Init(D3DXVECTOR3 & pos, D3DXVECTOR2 & size, int &nPlayer_ID)
 	m_fDistance = 0.0f;
 	m_StartPos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_pScene2D = CScene2D::Create(PRIORITY::PRIORITY_PLAYER, pos, ORIGINVERTEXTYPE::ORIGINVERTEXTYPE_ROTCENTER, size);
-	m_pScene2D->BindTexture(CTexture::GetTextureInfo(CTexture::NAME_PLAYER));
+	m_pScene2D->BindTexture(CTexture::GetTextureInfo(CTexture::NAME_PIENBOMB));
 	m_State = STATE_STANDBY;
 }
 
@@ -101,9 +101,23 @@ void CBomb::UpdateLanding(void)
 {
 }
 
+void CBomb::Expansion(void)
+{
+	// 位置の取得
+	D3DXVECTOR2 *size = m_pScene2D->GetSize();
+
+	size->x += 15.0f;
+	size->y += 15.0f;
+	m_pScene2D->UpdateVatexPosition();
+
+}
+
 void CBomb::Fire(float & fForce, float & fForceY)
 {
-
+	if (m_State != STATE_STANDBY)
+	{
+		return;
+	}
 	float fResultForce = fForce *0.5f +0.5f;
 	float fResultForceY = fForceY *0.5f +0.5f;
 
