@@ -74,6 +74,13 @@ public:
 		D3DXVECTOR2 size;
 	} PLAYEROFFSET;
 
+	typedef struct
+	{
+		D3DXVECTOR3 pos;
+		D3DXVECTOR3 fire;
+		D3DXVECTOR2 size;
+	} BOMBOFFSET;
+
 	typedef struct PLAYERPIEN
 	{
 		PLAYERPIEN() :bPlayer1Pien(false), bPlayer2Pien(false) {}
@@ -121,7 +128,7 @@ private:
 	CPlayer *m_pPlayer[PLAYER_MAX];				// プレイヤポインタ
 	CBomb *m_pBomb[PLAYER_MAX];					// 爆弾ポインタ
 	static PLAYEROFFSET m_offset[PLAYER_MAX];
-	static PLAYEROFFSET m_Bomoffset[PLAYER_MAX];
+	static BOMBOFFSET m_Bomoffset[PLAYER_MAX];
 
 	float m_fGageScal[SCAL_P2_GAGE_MAX];
 	float m_fGageScaForce[SCAL_P2_GAGE_MAX];

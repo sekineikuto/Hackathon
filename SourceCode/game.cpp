@@ -39,10 +39,10 @@ CGame::PLAYEROFFSET CGame::m_offset[PLAYER_MAX] = {
 	{ D3DXVECTOR3(250.0f, 550.0f, 0.0f),D3DXVECTOR2(120.0f, 160.0f) },
 	{ D3DXVECTOR3(1030.0f, 550.0f, 0.0f),D3DXVECTOR2(120.0f, 160.0f) },
 };
-CGame::PLAYEROFFSET CGame::m_Bomoffset[PLAYER_MAX] = 
+CGame::BOMBOFFSET CGame::m_Bomoffset[PLAYER_MAX] =
 {
-	{ D3DXVECTOR3(180.0f, 480.0f, 0.0f),D3DXVECTOR2(50.0f, 50.0f) },
-	{ D3DXVECTOR3(1080.0f, 500.0f, 0.0f),D3DXVECTOR2(50.0f, 50.0f) },
+	{ D3DXVECTOR3(180.0f, 480.0f, 0.0f),D3DXVECTOR3(300.0f, 500.0f, 0.0f),D3DXVECTOR2(50.0f, 50.0f) },
+	{ D3DXVECTOR3(1080.0f, 500.0f, 0.0f),D3DXVECTOR3(980.0f, 500.0f, 0.0f),D3DXVECTOR2(50.0f, 50.0f) },
 };
 
 CGame::GAMEWINSTATE CGame::m_GameWinState = WINSTATE_1P2P;
@@ -223,13 +223,13 @@ void CGame::UpdateNormal(void)
 			{
 				m_bMoveGage[SCAL_P2_GAGE_X] = false;
 				m_bMoveGage[SCAL_P2_GAGE_Y] = false;
-				m_pBomb[PLAYER_2]->Fire(m_fGageScal[SCAL_P2_GAGE_X], m_fGageScal[SCAL_P2_GAGE_Y]);
-				m_pBomb[PLAYER_2]->GetPos() = D3DXVECTOR3(980.0f, 500.0f, 0.0f);
+				m_pBomb[PLAYER_2]->Fire(m_fGageScal[SCAL_P2_GAGE_X], m_fGageScal[SCAL_P2_GAGE_Y],m_Bomoffset[PLAYER_2].fire);
 
 				pC2dui[UI_CUTIN_P2]->SetDisp(true);
 				m_pPlayer[PLAYER_2]->GetScene2D()->BindTexture(CTexture::GetTextureInfo(CTexture::NAME_PB01));
 
-				if (m_fGageScal[SCAL_P2_GAGE_X] + m_fGageScal[SCAL_P2_GAGE_Y] >= 1.5f)
+				if (m_fGageScal[SCAL_P2_GAGE_X] >= 0.75f &&
+					m_fGageScal[SCAL_P2_GAGE_Y] >= 0.75f)
 				{
 					m_Catin[PLAYER_2].bCatin = true;
 				}
@@ -238,11 +238,12 @@ void CGame::UpdateNormal(void)
 			{
 				m_bMoveGage[SCAL_P1_GAGE_X] = false;
 				m_bMoveGage[SCAL_P1_GAGE_Y] = false;
-				m_pBomb[PLAYER_1]->Fire(m_fGageScal[SCAL_P1_GAGE_X], m_fGageScal[SCAL_P1_GAGE_Y]);
-				m_pBomb[PLAYER_1]->GetPos() = D3DXVECTOR3(300.0f, 500.0f, 0.0f);
+				m_pBomb[PLAYER_1]->Fire(m_fGageScal[SCAL_P1_GAGE_X], m_fGageScal[SCAL_P1_GAGE_Y], m_Bomoffset[PLAYER_1].fire);
+
 				m_pPlayer[PLAYER_1]->GetScene2D()->BindTexture(CTexture::GetTextureInfo(CTexture::NAME_PY01));
 				pC2dui[UI_CUTIN_P1]->SetDisp(true);
-				if (m_fGageScal[SCAL_P1_GAGE_X] + m_fGageScal[SCAL_P1_GAGE_Y] >= 1.5f)
+				if (m_fGageScal[SCAL_P1_GAGE_X] >= 0.75f &&
+					m_fGageScal[SCAL_P1_GAGE_Y] >= 0.75f)
 				{
 					m_Catin[PLAYER_1].bCatin = true;
 				}

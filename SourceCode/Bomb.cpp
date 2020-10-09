@@ -112,7 +112,7 @@ void CBomb::Expansion(void)
 
 }
 
-void CBomb::Fire(float & fForce, float & fForceY)
+void CBomb::Fire(float & fForce, float & fForceY, D3DXVECTOR3 &pos)
 {
 	if (m_State != STATE_STANDBY)
 	{
@@ -120,8 +120,6 @@ void CBomb::Fire(float & fForce, float & fForceY)
 	}
 	float fResultForce = fForce *0.5f +0.5f;
 	float fResultForceY = fForceY *0.5f +0.5f;
-	fResultForce = 1.0f;
-	fResultForceY = 1.0f;
 
 	if (m_nPlayer_ID == CGame::PLAYER_1)
 	{
@@ -139,6 +137,7 @@ void CBomb::Fire(float & fForce, float & fForceY)
 	cout << "YŽ²‚ÌForce ==  " << fResultForceY << "\n";
 
 	// ˆÊ’u‚ÌŽæ“¾
+	*m_pScene2D->GetPosition() = pos;
 	m_StartPos = *m_pScene2D->GetPosition();
 	m_State = STATE_MOVEING;
 }
