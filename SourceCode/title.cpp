@@ -47,6 +47,9 @@ void CTitle::Init(void)
 		set[nCntUi].pos = Ui_Load[nCntUi].pos;
 		set[nCntUi].size = Ui_Load[nCntUi].size;
 	}
+	// タイトル背景の生成
+	pC2dui[TITLEUI_BG] = C2DUi::Create(set[TITLEUI_BG]);
+
 	// タイトルの設定
 	set[TITLEUI_NAME].mask.unMask = C2DUi::MASK_FADE | C2DUi::MASK_FLASHING;
 	// タイトルの生成
