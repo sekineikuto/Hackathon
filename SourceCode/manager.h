@@ -87,7 +87,7 @@ public:
 	static int&       GetTotalScore(void)         { return m_nMyScore; }		// トータルスコアの取得
 	static CLight&    GetLight(void)              { return m_Light; }			// ライトの取得
 	static CSound&    GetSound(void)              { return m_Sound; }			// サウンドの取得
-	static CMode&     GetModeClass(void)          {return *m_pModeClass; }		// モードクラスの取得
+	static CMode&     GetModeClass(void)          { return *m_pModeClass; }		// モードクラスの取得
 #ifdef _DEBUG
 	void SetFPS(int nFps);												// FPSの設定
 #endif

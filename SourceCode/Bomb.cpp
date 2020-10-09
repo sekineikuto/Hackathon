@@ -15,8 +15,7 @@
 //-------------------------------------------------------------------------------------------------------------
 // マクロ定義
 //-------------------------------------------------------------------------------------------------------------
-#define BOMB_BASEFORCE 20.0f
-
+#define BOMB_BASEFORCE 15.0f
 
 //-------------------------------------------------------------------------------------------------------------
 // 生成
@@ -35,6 +34,8 @@ CBomb * CBomb::Create(D3DXVECTOR3 & pos, D3DXVECTOR2 & size, int nPlayer_ID)
 void CBomb::Init(D3DXVECTOR3 & pos, D3DXVECTOR2 & size, int &nPlayer_ID)
 {
 	m_nPlayer_ID = nPlayer_ID;
+	m_fDistance = 0.0f;
+	m_StartPos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_pScene2D = CScene2D::Create(PRIORITY::PRIORITY_PLAYER, pos, ORIGINVERTEXTYPE::ORIGINVERTEXTYPE_ROTCENTER, size);
 	m_pScene2D->BindTexture(CTexture::GetTextureInfo(CTexture::NAME_PLAYER));
 	m_State = STATE_STANDBY;
@@ -85,12 +86,13 @@ void CBomb::UpdateMoveing(void)
 	*pos += m_move;
 	m_move.y += 0.5f;
 
+	if (pos->y >= 600.0f)
+	{
+		pos->y = 600.0f;
+		m_State = STATE_LANDING;
 
-	//if (pos->y >= 600.0f)
-	//{
-	//	pos->y = 600.0f;
-	//	m_State = STATE_LANDING;
-	//}
+		m_fDistance = abs(pos->x - m_StartPos.x);
+	}
 
 	m_pScene2D->UpdateVatexPosition();
 }
@@ -101,15 +103,33 @@ void CBomb::UpdateLanding(void)
 
 void CBomb::Fire(float & fForce, float & fForceY)
 {
+
+	float fResultForce = fForce *0.5f +0.5f;
+	float fResultForceY = fForceY *0.5f +0.5f;
+
+
 	if (m_nPlayer_ID == CGame::PLAYER_1)
 	{
-		m_move.x = BOMB_BASEFORCE*fForce;
+		m_move.x = BOMB_BASEFORCE*fResultForce;
 	}
 	else
 	{
-		m_move.x = BOMB_BASEFORCE*-fForce;
+		m_move.x = -BOMB_BASEFORCE*fResultForce;
 	}
-	m_move.y = -BOMB_BASEFORCE*fForceY;
 
+	m_move.y = -BOMB_BASEFORCE*fResultForceY;
+
+	cout << "プレイヤーID ==  " << m_nPlayer_ID << "\n";
+	cout << "X軸のForce ==  " << fResultForce << "\n";
+	cout << "Y軸のForce ==  " << fResultForceY << "\n";
+
+	// 位置の取得
+	m_StartPos = *m_pScene2D->GetPosition();
 	m_State = STATE_MOVEING;
+}
+
+
+D3DXVECTOR3 & CBomb::GetPos(void)
+{
+	return *m_pScene2D->GetPosition();
 }
