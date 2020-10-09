@@ -25,6 +25,8 @@
 
 #include "score.h"
 
+#include "sound.h"
+
 //-------------------------------------------------------------------------------------------------------------
 // ƒ}ƒNƒ’è‹` 
 //-------------------------------------------------------------------------------------------------------------
@@ -33,7 +35,7 @@
 #define GAME_TIME				30
 
 
-
+#define GAME_CATIN_PLAYSOUND	1
 #define GAME_CATIN_IN			300
 #define GAME_CATIN_STOP			420
 #define GAME_CATIN_OUT			540
@@ -302,6 +304,7 @@ void CGame::UpdateNormal(void)
 				m_PlayerPien.bPlayer1Pien = bExprosureP1;
 				m_PlayerPien.bPlayer2Pien = bExprosureP2;
 
+				CManager::GetSound().PlaySoundA(CSound::SOUND_LABEL_SE_EXPLOSION1);
 				this->SetState(STATE_OUT);
 				m_nCntState = 0;
 			}
@@ -319,14 +322,14 @@ void CGame::UpdateNormal(void)
 				{
 					pC2dui[UI_CUTIN_P1]->SetDisp(true);
 					m_Catin[PLAYER_1].bCatin = true;
-
 					m_bDuelist = true;
+					m_nCntDuelist = 0;
 				}
 
-				pC2dui[UI_CUTIN_P1]->SetDisp(true);
-				m_Catin[PLAYER_1].bCatin = true;
-				m_bDuelist = true;
-				m_nCntDuelist = 0;
+				//pC2dui[UI_CUTIN_P1]->SetDisp(true);
+				//m_Catin[PLAYER_1].bCatin = true;
+				//m_bDuelist = true;
+				//m_nCntDuelist = 0;
 			}
 
 			if (CManager::GetKeyboard().GetTrigger(DIK_RSHIFT))
@@ -342,13 +345,15 @@ void CGame::UpdateNormal(void)
 				{
 					pC2dui[UI_CUTIN_P2]->SetDisp(true);
 					m_Catin[PLAYER_2].bCatin = true;
-
 					m_bDuelist = true;
+					m_nCntDuelist = 0;
 				}
+#ifdef _DEBUG
 				pC2dui[UI_CUTIN_P2]->SetDisp(true);
 				m_Catin[PLAYER_2].bCatin = true;
 				m_bDuelist = true;
 				m_nCntDuelist = 0;
+#endif
 			}
 			MLB_DEFAULT:break;
 	}
@@ -467,6 +472,12 @@ void CGame::CatinProc(void)
 			m_Catin[nCntPlayer].nCntCaatin++;
 
 			int nIndex = (nCntPlayer == PLAYER_1) ? UI_CUTIN_P1 : UI_CUTIN_P2;
+
+			if (m_Catin[nCntPlayer].nCntCaatin == GAME_CATIN_PLAYSOUND)
+			{
+				CManager::GetSound().StopSound();
+				CManager::GetSound().PlaySoundA(CSound::SOUND_LABEL_BGM_CUTINDYUERU);
+			}
 
 			if (m_Catin[nCntPlayer].nCntCaatin <= GAME_CATIN_IN)
 			{

@@ -11,6 +11,7 @@
 #include "Scene2D.h"
 #include "texture.h"
 #include "game.h"
+#include "sound.h"
 
 //-------------------------------------------------------------------------------------------------------------
 // マクロ定義
@@ -33,6 +34,7 @@ CBomb * CBomb::Create(D3DXVECTOR3 & pos, D3DXVECTOR2 & size, int nPlayer_ID)
 //-------------------------------------------------------------------------------------------------------------
 void CBomb::Init(D3DXVECTOR3 & pos, D3DXVECTOR2 & size, int &nPlayer_ID)
 {
+	m_bBGM = false;
 	m_nPlayer_ID = nPlayer_ID;
 	m_fDistance = 0.0f;
 	m_StartPos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
@@ -82,6 +84,12 @@ void CBomb::UpdateMoveing(void)
 {
 	if (m_State == STATE_MOVEING)
 	{
+		if (m_bBGM == false)
+		{
+			CManager::GetSound().PlaySoundA(CSound::SOUND_LABEL_SE_THROW);
+			m_bBGM = true;
+		}
+
 		// 位置の取得
 		D3DXVECTOR3 *pos = m_pScene2D->GetPosition();
 
@@ -121,6 +129,7 @@ void CBomb::Fire(float & fForce, float & fForceY, D3DXVECTOR3 &pos)
 	{
 		return;
 	}
+
 	float fResultForce = fForce *0.5f +0.5f;
 	float fResultForceY = fForceY *0.5f +0.5f;
 

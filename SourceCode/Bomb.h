@@ -61,6 +61,8 @@ private:
 	D3DXVECTOR3 m_StartPos;
 	float       m_fDistance;
 	int       m_nPlayer_ID;
+
+	bool m_bBGM;
 };
 
 #endif
