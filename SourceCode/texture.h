@@ -57,6 +57,11 @@ public:
 		NAME_PIEN,
 		NAME_PIENBOMB,
 		NAME_TUTORIALDISCRIPTION,
+		NAME_DOT,
+		NAME_PB00,
+		NAME_PB01,
+		NAME_PY00,
+		NAME_PY01,
 		NAME_MAX						// �ő吔
 	};
 	enum
