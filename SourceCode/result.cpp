@@ -15,6 +15,7 @@
 #include "fade.h"
 #include "score.h"
 #include "texture.h"
+#include "sound.h"
 
 //-------------------------------------------------------------------------------------------------------------
 // マクロ定義
@@ -28,7 +29,7 @@
 //-------------------------------------------------------------------------------------------------------------
 // 静的メンバ変数の初期化
 //-------------------------------------------------------------------------------------------------------------
-D3DXVECTOR3 CResult::m_posScore[MAX_PLAYER] = 
+D3DXVECTOR3 CResult::m_posScore[MAX_PLAYER] =
 {
 	D3DXVECTOR3(100.0f, 590.0f, 0.0f),
 	D3DXVECTOR3(740.0f, 590.0f, 0.0f)
@@ -40,13 +41,13 @@ D3DXVECTOR2 CResult::m_sizeScore[MAX_PLAYER] =
 	D3DXVECTOR2(40.0f, 80.0f)
 };
 
-D3DXVECTOR3 CResult::m_posPien[MAX_PLAYER] = 
+D3DXVECTOR3 CResult::m_posPien[MAX_PLAYER] =
 {
 	D3DXVECTOR3(300.0f, SCREEN_WIDTH / 2 - 350.0f, 0.0f),
 	D3DXVECTOR3(940.0f, SCREEN_WIDTH / 2 - 350.0f, 0.0f)
 };
 
-D3DXVECTOR3 CResult::m_posText[MAX_PLAYER] = 
+D3DXVECTOR3 CResult::m_posText[MAX_PLAYER] =
 {
 	D3DXVECTOR3(300.0f, SCREEN_WIDTH / 2 - 150.0f, 0.0f),
 	D3DXVECTOR3(940.0f, SCREEN_WIDTH / 2 - 150.0f, 0.0f)
@@ -86,7 +87,7 @@ void CResult::Init(void)
 	pC2dui->GetFade()->nAddSign = 1;
 
 	//pC2dui->GetFlashing()->m_nTiming = 20;*/
-	
+
 	C2DUi::SETING2DUI set;
 	set.bDisp = true;
 	set.col = MYLIB_D3DXCOR_SET;
@@ -102,8 +103,8 @@ void CResult::Init(void)
 			bFlash = true;
 
 		// スコア
-		m_pScore[nCntPlayer] = CScore::Create(m_posScore[nCntPlayer], 
-								m_sizeScore[nCntPlayer], 
+		m_pScore[nCntPlayer] = CScore::Create(m_posScore[nCntPlayer],
+								m_sizeScore[nCntPlayer],
 								CScore::GetPlayerScore(nCntPlayer), bFlash);
 		// 単位
 		set.nTextureID = CTexture::NAME_PIENDISTANCE;
@@ -165,7 +166,11 @@ void CResult::Update(void)
 
 	if (CManager::GetKeyboard().GetTrigger(DIK_RETURN))
 	{
-		CManager::GetRenderer().GetFade()->SetFade(CManager::MODE_RANKING);
+		if (CManager::GetRenderer().GetFade()->GetFadeState() == CFade::FADE_NONE)
+		{
+			CManager::GetRenderer().GetFade()->SetFade(CManager::MODE_RANKING);
+			CManager::GetSound().PlaySound(CSound::SOUND_LABEL_SE_ENTER);
+		}
 	}
 }
 
