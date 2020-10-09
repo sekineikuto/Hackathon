@@ -32,6 +32,14 @@
 #define GAME_EXPOSURE_RANGE		277.0f
 #define GAME_TIME				30
 
+
+
+#define GAME_CATIN_IN			300
+#define GAME_CATIN_STOP			420
+#define GAME_CATIN_OUT			540
+#define GAME_CATIN_PLAY			560		// 更新再開
+
+
 //-------------------------------------------------------------------------------------------------------------
 // 静的メンバ変数の初期化
 //-------------------------------------------------------------------------------------------------------------
@@ -48,6 +56,11 @@ CGame::BOMBOFFSET CGame::m_Bomoffset[PLAYER_MAX] =
 CGame::GAMEWINSTATE CGame::m_GameWinState = WINSTATE_1P2P;
 CGame::PLAYERPIEN   CGame::m_PlayerPien;
 CGame::PLAYERDIST	CGame::m_PlaerDist;
+float CGame::m_fAlphaValue[2] =
+{
+	1.0f / (GAME_CATIN_IN),
+	1.0f / (GAME_CATIN_OUT - GAME_CATIN_STOP)
+};
 
 
 //-------------------------------------------------------------------------------------------------------------
@@ -80,8 +93,8 @@ void CGame::Init(void)
 		C2DUi::SETING2DUI(0,CTexture::NAME_POWERGAUGE_2P, true, D3DXVECTOR3(950.0f,650.0f,0.0f), MYLIB_D3DXCOR_SET, D3DXVECTOR2(300.0f,60.0f),0.0f, 0),
 		C2DUi::SETING2DUI(0,CTexture::NAME_ANGLEGAUGE_2P, true, D3DXVECTOR3(1180.0f,300.0f,0.0f), MYLIB_D3DXCOR_SET, D3DXVECTOR2(60.0f,280.0f),0.0f, 0),
 
-		C2DUi::SETING2DUI(0,CTexture::NAME_PY03, false, D3DXVECTOR3(300.0f,360.0f,0.0f), MYLIB_D3DXCOR_SET, D3DXVECTOR2(0.0f,0.0f),0.0f, 0),
-		C2DUi::SETING2DUI(0,CTexture::NAME_PB03, false, D3DXVECTOR3(980.0f,360.0f,0.0f), MYLIB_D3DXCOR_SET, D3DXVECTOR2(0.0f,0.0f),0.0f, 0),
+		C2DUi::SETING2DUI(0,CTexture::NAME_PY03, false, D3DXVECTOR3(300.0f,360.0f,0.0f), D3DXCOLOR(1.0f,1.0f,1.0f,0.0f), D3DXVECTOR2(350.0f,350.0f),0.0f, 0),
+		C2DUi::SETING2DUI(0,CTexture::NAME_PB03, false, D3DXVECTOR3(980.0f,360.0f,0.0f), D3DXCOLOR(1.0f,1.0f,1.0f,0.0f), D3DXVECTOR2(350.0f,350.0f),0.0f, 0),
 	};
 	
 	CScene::PRIORITY pri[UI_MAX] = {
@@ -145,6 +158,10 @@ void CGame::Init(void)
 		m_fGageScaSign[nCntaGage] = 1;
 		m_bMoveGage[nCntaGage] = true;
 	}
+
+
+	m_bDuelist = false;
+	m_nCntDuelist = 0;
 }
 
 //-------------------------------------------------------------------------------------------------------------
@@ -160,13 +177,26 @@ void CGame::Uninit(void)
 //-------------------------------------------------------------------------------------------------------------
 void CGame::Update(void)
 {
-	switch (this->m_State)
-	{
-		MLB_CASE(STATE_NORMAL)	UpdateNormal();// 通常更新
-		MLB_CASE(STATE_OUT)UpdateOut();// アウト更新
-	MLB_DEFAULT:;
-	}
 
+
+	if (m_bDuelist == false)
+	{
+		switch (this->m_State)
+		{
+			MLB_CASE(STATE_NORMAL)UpdateNormal();// 通常更新
+			MLB_CASE(STATE_OUT)UpdateOut();// アウト更新
+		MLB_DEFAULT:;
+		}
+	}
+	else
+	{
+		CatinProc();
+
+		if (m_nCntDuelist++ == GAME_CATIN_PLAY)
+		{
+			m_bDuelist = false;
+		}
+	}
 #ifdef _DEBUG
 	if (CManager::GetKeyboard().GetTrigger(DIK_RETURN))
 	{
@@ -191,6 +221,12 @@ void CGame::UpdateNormal(void)
 	switch (CManager::GetRenderer().GetFade()->GetFadeState())
 	{
 		MLB_CASE(CFade::FADE_NONE)
+			for (int nCntPlayer = 0; nCntPlayer < PLAYER_MAX; nCntPlayer++)
+			{
+				m_pBomb[nCntPlayer]->UpdateMoveing();
+			}
+
+
 			CatinProc();
 			if (m_nCntState == 60) {
 				pC2dui[UI_TIMER]->GetNumericString()->AddValue();
@@ -222,39 +258,6 @@ void CGame::UpdateNormal(void)
 			// ゲージの更新
 			GageUpdate();
 
-			if (CManager::GetKeyboard().GetTrigger(DIK_LSHIFT))
-			{
-				m_bMoveGage[SCAL_P1_GAGE_X] = false;
-				m_bMoveGage[SCAL_P1_GAGE_Y] = false;
-				m_pBomb[PLAYER_1]->Fire(m_fGageScal[SCAL_P1_GAGE_X], m_fGageScal[SCAL_P1_GAGE_Y], m_Bomoffset[PLAYER_1].fire);
-
-
-				m_pPlayer[PLAYER_1]->GetScene2D()->BindTexture(CTexture::GetTextureInfo(CTexture::NAME_PY01));
-				if (m_fGageScal[SCAL_P1_GAGE_X] >= 0.75f &&
-					m_fGageScal[SCAL_P1_GAGE_Y] >= 0.75f)
-				{
-					pC2dui[UI_CUTIN_P1]->SetDisp(true);
-					m_Catin[PLAYER_1].bCatin = true;
-				}
-			}
-
-			if (CManager::GetKeyboard().GetTrigger(DIK_RSHIFT))
-			{
-				m_bMoveGage[SCAL_P2_GAGE_X] = false;
-				m_bMoveGage[SCAL_P2_GAGE_Y] = false;
-				m_pBomb[PLAYER_2]->Fire(m_fGageScal[SCAL_P2_GAGE_X], m_fGageScal[SCAL_P2_GAGE_Y],m_Bomoffset[PLAYER_2].fire);
-
-				m_pPlayer[PLAYER_2]->GetScene2D()->BindTexture(CTexture::GetTextureInfo(CTexture::NAME_PB01));
-
-				if (m_fGageScal[SCAL_P2_GAGE_X] >= 0.75f &&
-					m_fGageScal[SCAL_P2_GAGE_Y] >= 0.75f)
-				{
-					pC2dui[UI_CUTIN_P2]->SetDisp(true);
-					m_Catin[PLAYER_2].bCatin = true;
-				}
-			}
-
-
 			if (m_pBomb[PLAYER_1]->GetState() ==CBomb::STATE_LANDING &&
 				m_pBomb[PLAYER_2]->GetState() == CBomb::STATE_LANDING)
 			{
@@ -263,9 +266,6 @@ void CGame::UpdateNormal(void)
 
 				CScore::SetPlayerScore(PLAYER_1, fDistance1);
 				CScore::SetPlayerScore(PLAYER_2, fDistance2);
-
-				CResult::SetWinPlayer(m_GameWinState);
-
 
 				m_PlaerDist.fPlayer1Dist = fDistance1;
 				m_PlaerDist.fPlayer2Dist = fDistance2;
@@ -306,6 +306,50 @@ void CGame::UpdateNormal(void)
 				m_nCntState = 0;
 			}
 
+			if (CManager::GetKeyboard().GetTrigger(DIK_LSHIFT))
+			{
+				m_bMoveGage[SCAL_P1_GAGE_X] = false;
+				m_bMoveGage[SCAL_P1_GAGE_Y] = false;
+				m_pBomb[PLAYER_1]->Fire(m_fGageScal[SCAL_P1_GAGE_X], m_fGageScal[SCAL_P1_GAGE_Y], m_Bomoffset[PLAYER_1].fire);
+
+
+				m_pPlayer[PLAYER_1]->GetScene2D()->BindTexture(CTexture::GetTextureInfo(CTexture::NAME_PY01));
+				if (m_fGageScal[SCAL_P1_GAGE_X] >= 0.75f &&
+					m_fGageScal[SCAL_P1_GAGE_Y] >= 0.75f)
+				{
+					pC2dui[UI_CUTIN_P1]->SetDisp(true);
+					m_Catin[PLAYER_1].bCatin = true;
+
+					m_bDuelist = true;
+				}
+
+				pC2dui[UI_CUTIN_P1]->SetDisp(true);
+				m_Catin[PLAYER_1].bCatin = true;
+				m_bDuelist = true;
+				m_nCntDuelist = 0;
+			}
+
+			if (CManager::GetKeyboard().GetTrigger(DIK_RSHIFT))
+			{
+				m_bMoveGage[SCAL_P2_GAGE_X] = false;
+				m_bMoveGage[SCAL_P2_GAGE_Y] = false;
+				m_pBomb[PLAYER_2]->Fire(m_fGageScal[SCAL_P2_GAGE_X], m_fGageScal[SCAL_P2_GAGE_Y], m_Bomoffset[PLAYER_2].fire);
+
+				m_pPlayer[PLAYER_2]->GetScene2D()->BindTexture(CTexture::GetTextureInfo(CTexture::NAME_PB01));
+
+				if (m_fGageScal[SCAL_P2_GAGE_X] >= 0.75f &&
+					m_fGageScal[SCAL_P2_GAGE_Y] >= 0.75f)
+				{
+					pC2dui[UI_CUTIN_P2]->SetDisp(true);
+					m_Catin[PLAYER_2].bCatin = true;
+
+					m_bDuelist = true;
+				}
+				pC2dui[UI_CUTIN_P2]->SetDisp(true);
+				m_Catin[PLAYER_2].bCatin = true;
+				m_bDuelist = true;
+				m_nCntDuelist = 0;
+			}
 			MLB_DEFAULT:break;
 	}
 }
@@ -424,14 +468,24 @@ void CGame::CatinProc(void)
 
 			int nIndex = (nCntPlayer == PLAYER_1) ? UI_CUTIN_P1 : UI_CUTIN_P2;
 
-			if (m_Catin[nCntPlayer].nCntCaatin <= 12)
+			if (m_Catin[nCntPlayer].nCntCaatin <= GAME_CATIN_IN)
 			{
 				D3DXVECTOR2 *pSize =  pC2dui[nIndex]->GetImage()->GetSize();
-				pSize->x += 35.0f;
-				pSize->y += 35.0f;
+				float *pAlpha = &pC2dui[nIndex]->GetImage()->GetColor()->a;
+				*pAlpha += m_fAlphaValue[0];
+				pC2dui[nIndex]->GetImage()->UpdateVatexColor();
+			}
+			if (m_Catin[nCntPlayer].nCntCaatin >= GAME_CATIN_STOP)
+			{
+				D3DXVECTOR2 *pSize = pC2dui[nIndex]->GetImage()->GetSize();
+				float *pAlpha = &pC2dui[nIndex]->GetImage()->GetColor()->a;
+				*pAlpha -= m_fAlphaValue[1];
+				pSize->x += 5.0f;
+				pSize->y += 5.0f;
+				pC2dui[nIndex]->GetImage()->UpdateVatexColor();
 				pC2dui[nIndex]->GetImage()->UpdateVatexPosition();
 			}
-			if (m_Catin[nCntPlayer].nCntCaatin == 32)
+			if (m_Catin[nCntPlayer].nCntCaatin == GAME_CATIN_OUT)
 			{
 				D3DXVECTOR2 *pSize = pC2dui[nIndex]->GetImage()->GetSize();
 				pSize->x = 0.0f;
